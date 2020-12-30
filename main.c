@@ -7,7 +7,7 @@ int main()
 {
     setlocale(LC_ALL, "");    // para o texto sair bem (mesmo os acentos)
 
-    printf("Hello José Areia!\n");
+    printf("Hello Adão!\n");
 
     return 0;
 }
