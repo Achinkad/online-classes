@@ -3,6 +3,6 @@
 
 int main()
 {
-    printf("Hello João Adão!\n");
+    printf("Hello José Areia!\n");
     return 0;
 }
