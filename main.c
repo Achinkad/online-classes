@@ -26,7 +26,6 @@ int main()
         limpaBufferStdin();
         opcao = toupper(opcao);
 
-        case 'D':
         switch(opcao)
         {
         case 'A':
