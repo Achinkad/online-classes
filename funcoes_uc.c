@@ -9,7 +9,7 @@
 
 char menuGeralUC(){
     char op;
-    printf("\n\n--------- GESTAO DE UC'S ---------\n");
+    printf("--------- GESTAO DE UC'S ---------\n");
     printf("I - Inserir nova UC\n");
     printf("L - Listar UC's\n");
     printf("E - Editar UC\n");

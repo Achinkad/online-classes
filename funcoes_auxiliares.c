@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
 
 #include "funcoes_auxiliares.h"
@@ -219,6 +220,7 @@ void verificaOpcao(char opcao, tipoUC ucs[MAX_UC], int quantUC)
         switch(opcao)
         {
         case 'A':
+            system("clear");
             gestaoUCs(ucs,quantUC);
             break;
 
