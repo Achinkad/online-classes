@@ -169,7 +169,6 @@ void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos,
                 opcaoSelecionada[i]=toupper(opcaoSelecionada[i]);
                 i++;
             }
-            printf("%s", opcaoSelecionada);
             for(i=0;i<quantos;i++){
                 if(strcmp(opcoes[i],opcaoSelecionada)==0){
                     strcpy(opcao, opcaoSelecionada);

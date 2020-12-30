@@ -3,7 +3,9 @@
 #include <ctype.h>
 #include <time.h>
 #include <locale.h>
+
 #include "funcoes_auxiliares.h"
+#include "funcoes_tipoAula.h"
 #include "funcoes_uc.h"
 
 int main()

@@ -4,6 +4,7 @@
 
 #include "constantes.h"
 #include "funcoes_auxiliares.h"
+#include "funcoes_tipoAula.h"
 
 char menuGeralUC(){
     char op;
@@ -37,6 +38,9 @@ tipoUC lerDadosUC(){
     lerOpcao("Indique o tipo de UC (OB)rigatoria ou (OP)cional: ", opcoesTipoUC, 2, e.tipoUC);
     e.semestre=lerInteiro("Indique o Semestre (1-6)",1,6);
     lerOpcao("Indique o Regime (D)iurno ou (PL)Pos-laboral: ", opcoesRegime, 2, e.regime);
+    e.aulasT=criarTipoAula("T");
+    e.aulasTP=criarTipoAula("TP");
+    e.aulasPL=criarTipoAula("PL");
     return e;
 }
 
@@ -57,6 +61,9 @@ void listarUCs(tipoUC ucs[MAX_UC], int quantUCs){
             }else if(strcmp(ucs[i].regime,"PL")==0){
                 printf("\nRegime: Pos-laboral");
             }
+            printf("\n%d Aulas T - %d minutos", ucs[i].aulasT.quantAulas, ucs[i].aulasT.duracao);
+            printf("\n%d Aulas TP - %d minutos", ucs[i].aulasTP.quantAulas, ucs[i].aulasTP.duracao);
+            printf("\n%d Aulas PL - %d minutos", ucs[i].aulasPL.quantAulas, ucs[i].aulasPL.duracao);
             if(quantUCs-1!=i){
                 printf("\n------");
             }
