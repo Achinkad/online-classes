@@ -5,6 +5,9 @@
 
 
 char menuGeralUC(); //funcao para apresentar as opcoes da gestao de ucs
+int procuraUC(int codigo, tipoUC vetor[MAX_UC], int quantos);
+tipoUC lerDadosUC();
+void listarUCs(tipoUC ucs[MAX_UC], int quantUCs);
 
 void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC);
 

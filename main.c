@@ -9,7 +9,7 @@
 int main()
 {
     tipoUC ucs[MAX_UC];
-    int quantUC;
+    int quantUC=0;
     char opcao;
     setlocale(LC_ALL, "");
 

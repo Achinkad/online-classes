@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "funcoes_auxiliares.h"
 
@@ -136,4 +137,52 @@ void limpaBufferStdin(void)
         chr = getchar();
     }
     while (chr != '\n' && chr != EOF);
+}
+
+void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos, char opcao[MAX_STRING]){
+    int i, tamanhoString;
+    char opcaoSelecionada[MAX_STRING];
+    int opcaoInvalida=1;
+
+    do 			// Repete leitura caso sejam obtidas strings vazias
+    {
+        //   puts(mensagem);
+        printf("%s", mensagem);
+        scanf("%s", opcaoSelecionada);
+
+
+        tamanhoString = strlen(opcaoSelecionada);
+        if (tamanhoString == 1 && opcaoSelecionada[0] == '\n')
+        {
+            printf("Nao foram introduzidos caracteres!!! . apenas carregou no ENTER \n\n");  // apenas faz sentido limpar buffer se a ficarem caracteres
+        }else{
+            if(opcao[tamanhoString-1] != '\n')  // ficaram caracteres no buffer....
+            {
+                limpaBufferStdin();  // apenas faz sentido limpar buffer se a ficarem caracteres
+            }
+            else
+            {
+                opcao[tamanhoString-1] ='\0';          //substitui \n da string armazenada em vetor por \0
+            }
+            i=0;
+            while(opcaoSelecionada[i]){
+                opcaoSelecionada[i]=toupper(opcaoSelecionada[i]);
+                i++;
+            }
+            printf("%s", opcaoSelecionada);
+            for(i=0;i<quantos;i++){
+                if(strcmp(opcoes[i],opcaoSelecionada)==0){
+                    strcpy(opcao, opcaoSelecionada);
+                    opcaoInvalida=0;
+                }
+            }
+
+            if (opcaoInvalida == 1)
+            {
+                printf("OPCAO INVALIDA!! Insira uma opcao valida\n\n");  // apenas faz sentido limpar buffer se a ficarem caracteres
+            }
+        }
+
+    }
+    while (tamanhoString == 1 && opcaoSelecionada[0] == '\n' || opcaoInvalida == 1 );
 }
