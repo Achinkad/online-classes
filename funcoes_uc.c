@@ -42,20 +42,28 @@ tipoUC lerDadosUC(){
 
 void listarUCs(tipoUC ucs[MAX_UC], int quantUCs){
     int i;
-    for(i=0;i<quantUCs;i++){
-        printf("\nCódigo: %s - %s", ucs[i].codigo, ucs[i].designacao);
-        if(strcmp(ucs[i].tipoUC,"OB")==0){
-           printf("\nTipo de UC: Obrigatória");
-        }else if(strcmp(ucs[i].tipoUC,"OP")==0){
-            printf("\nTipo de UC: Opcional");
+    if(quantUCs>0){
+        printf("\n\n------------------ Início de Resultados --------------------\n");
+        for(i=0;i<quantUCs;i++){
+            printf("\nCódigo: %s - %s", ucs[i].codigo, ucs[i].designacao);
+            if(strcmp(ucs[i].tipoUC,"OB")==0){
+               printf("\nTipo de UC: Obrigatória");
+            }else if(strcmp(ucs[i].tipoUC,"OP")==0){
+                printf("\nTipo de UC: Opcional");
+            }
+            printf("\nSemestre:%d", ucs[i].semestre);
+            if(strcmp(ucs[i].regime,"D")==0){
+               printf("\nRegime: Diurno");
+            }else if(strcmp(ucs[i].regime,"PL")==0){
+                printf("\nRegime: Pos-laboral");
+            }
+            if(quantUCs-1!=i){
+                printf("\n------");
+            }
         }
-        printf("\nSemestre:%d", ucs[i].semestre);
-        if(strcmp(ucs[i].regime,"D")==0){
-           printf("\nRegime: Diurno");
-        }else if(strcmp(ucs[i].regime,"PL")==0){
-            printf("\nRegime: Pos-laboral");
-        }
-
+        printf("\n\n-------------------- Fim de Resultados --------------------\n\n");
+    }else{
+        printf("\n\nNao existem UC's Inseridas!\n\n");
     }
 }
 
