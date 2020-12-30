@@ -4,9 +4,12 @@
 #include <time.h>
 #include <locale.h>
 #include "funcoes_auxiliares.h"
+#include "funcoes_uc.h"
 
 int main()
 {
+    tipoUC ucs[MAX_UC];
+    int quantUC;
     char opcao;
     setlocale(LC_ALL, "");
 
@@ -23,10 +26,11 @@ int main()
         limpaBufferStdin();
         opcao = toupper(opcao);
 
+        case 'D':
         switch(opcao)
         {
         case 'A':
-            printf("Gestao de Unidades Curriculares\n\n");
+            gestaoUCs(ucs,quantUC);
             break;
 
         case 'B':
