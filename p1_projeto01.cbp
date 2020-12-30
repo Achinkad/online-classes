@@ -36,17 +36,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="funcoes_auxiliares.h" />
-		<Unit filename="funcoes_tipoAula.c">
-			<Option compilerVar="CC" />
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="funcoes_tipoAula.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="funcoes_uc.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="funcoes_uc.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

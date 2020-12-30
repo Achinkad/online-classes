@@ -9,5 +9,7 @@ void lerString(char mensagem[MAX_STRING], char vetorCaracteres[MAX_STRING], int 
 tipoData lerData(void);
 void limpaBufferStdin(void);
 void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos, char opcao[MAX_STRING]);
+char menu();
+void verificaOpcao(char opcao, tipoUC ucs[MAX_UC], int quantUC);
 
 #endif // FUNCOES_AUXILIARES_H_INCLUDED

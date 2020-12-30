@@ -3,6 +3,7 @@
 #include <ctype.h>
 
 #include "funcoes_auxiliares.h"
+#include "funcoes_uc.h"
 
 // Acrescentada variavel controlo para repetir insercao se ao for inserido numero int
 int lerInteiro(char mensagem[MAX_STRING], int minimo, int maximo)
@@ -139,7 +140,8 @@ void limpaBufferStdin(void)
     while (chr != '\n' && chr != EOF);
 }
 
-void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos, char opcao[MAX_STRING]){
+void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos, char opcao[MAX_STRING])
+{
     int i, tamanhoString;
     char opcaoSelecionada[MAX_STRING];
     int opcaoInvalida=1;
@@ -155,7 +157,9 @@ void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos,
         if (tamanhoString == 1 && opcaoSelecionada[0] == '\n')
         {
             printf("Nao foram introduzidos caracteres!!! . apenas carregou no ENTER \n\n");  // apenas faz sentido limpar buffer se a ficarem caracteres
-        }else{
+        }
+        else
+        {
             if(opcao[tamanhoString-1] != '\n')  // ficaram caracteres no buffer....
             {
                 limpaBufferStdin();  // apenas faz sentido limpar buffer se a ficarem caracteres
@@ -165,12 +169,15 @@ void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos,
                 opcao[tamanhoString-1] ='\0';          //substitui \n da string armazenada em vetor por \0
             }
             i=0;
-            while(opcaoSelecionada[i]){
+            while(opcaoSelecionada[i])
+            {
                 opcaoSelecionada[i]=toupper(opcaoSelecionada[i]);
                 i++;
             }
-            for(i=0;i<quantos;i++){
-                if(strcmp(opcoes[i],opcaoSelecionada)==0){
+            for(i=0; i<quantos; i++)
+            {
+                if(strcmp(opcoes[i],opcaoSelecionada)==0)
+                {
                     strcpy(opcao, opcaoSelecionada);
                     opcaoInvalida=0;
                 }
@@ -184,4 +191,63 @@ void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos,
 
     }
     while (tamanhoString == 1 && opcaoSelecionada[0] == '\n' || opcaoInvalida == 1 );
+}
+
+
+// Estrutura do menu principal do programa
+char menu()
+{
+    char opcao;
+    printf("------------------ Menu Principal ------------------\n\n");
+    printf("Unidade Curriculares: 12\tAulas agendadas: 12\n");
+    printf("Aulas realizadas: 21\t\tAulas gravadas: 3\n\n");
+    printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
+    printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n");
+    printf("\tS - Sair\n");
+    printf("\nInsira uma opcao: ");
+    scanf("%c", &opcao);
+    limpaBufferStdin();
+    opcao = toupper(opcao);
+    return opcao;
+}
+
+// Verifica a opção escolhida na função "menu"
+void verificaOpcao(char opcao, tipoUC ucs[MAX_UC], int quantUC)
+{
+    if(opcao == 'A' || opcao == 'B' || opcao == 'C' || opcao == 'D' || opcao == 'E' || opcao == 'S')
+    {
+        switch(opcao)
+        {
+        case 'A':
+            gestaoUCs(ucs,quantUC);
+            break;
+
+        case 'B':
+            printf("Gestao de Aulas Online\n\n");
+            break;
+
+        case 'C':
+            printf("Gestao de Ficheiros\n\n");
+            break;
+
+        case 'D':
+            printf("Gestao de Dados Estatisticos\n\n");
+            break;
+
+        case 'E':
+            printf("Gestao de Acesso as Aulas Online\n\n");
+            break;
+
+        case 'S':
+            break;
+        }
+    }
+    else
+    {
+        printf("Opcao invalida. Por favor, insira uma opcao valida: ");
+        scanf("%c", &opcao);
+        limpaBufferStdin();
+        opcao = toupper(opcao);
+        verificaOpcao(opcao, ucs, quantUC);
+    }
 }

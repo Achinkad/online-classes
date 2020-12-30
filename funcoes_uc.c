@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
@@ -75,7 +76,7 @@ void listarUCs(tipoUC ucs[MAX_UC], int quantUCs){
 }
 
 void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
-    char opcao, codigo[MAX_STRING];
+    char opcao, codigo[MAX_STRING], opcaoMenu, opcaoSair;
     int posicao;
     do{
         opcao=menuGeralUC();
@@ -100,7 +101,18 @@ void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
                 printf("Editar UC");
             break;
             case 'S':
-
+                printf("Ao sair o seu terminal sera limpo. Pretende sair? (S/N): ");
+                scanf("%c", &opcaoSair);
+                limpaBufferStdin();
+                opcaoSair = toupper(opcaoSair);
+                if(opcaoSair == 'S')
+                {
+                    system("clear");
+                    opcaoMenu = menu();
+                    verificaOpcao(opcaoMenu, ucs, quantUC);
+                }else{
+                    gestaoUCs(ucs, quantUC);
+                }
             break;
             default:
                 printf("Opção Inválida");
