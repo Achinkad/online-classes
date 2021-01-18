@@ -40,8 +40,8 @@ typedef struct{
     tipoData data;
     tipoHora horaInicio;
     tipoHora horaFim;
-    char estado[2];
-    char gravacao[2];
+    char estado;
+    char gravacao;
 }tipoAulasOnline;
 
 #endif // CONSTANTES_H_INCLUDED
