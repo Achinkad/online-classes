@@ -7,6 +7,7 @@
 #include "funcoes_auxiliares.h"
 #include "funcoes_tipoAula.h"
 #include "funcoes_uc.h"
+#include "funcoes_aulasOnline.h"
 
 int main()
 {
@@ -15,13 +16,17 @@ int main()
     char opcao;
     setlocale(LC_ALL, "");
 
-    opcao = menu();
-    verificaOpcao(opcao, ucs, quantUC);
+    do
+    {
+        opcao = menu();
+        verificaOpcao(opcao, ucs, quantUC);
+    }
+    while(opcao != 'S');
 
     return 0;
 }
 
-// Apresentação da estrutura do menu
+// Apresentação da estrutura do menu geral
 char menu()
 {
     char opcao;
@@ -46,11 +51,11 @@ void verificaOpcao(char opcao, tipoUC ucs[MAX_UC], int quantUC)
         switch(opcao)
         {
         case 'A':
-            gestaoUCs(ucs,quantUC);
+            gestaoUCs(ucs, quantUC);
             break;
 
         case 'B':
-            printf("Gestao de Aulas Online\n\n");
+            gestaoAulas();
             break;
 
         case 'C':

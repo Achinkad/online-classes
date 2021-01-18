@@ -101,8 +101,6 @@ void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
                 printf("Editar UC");
             break;
             case 'S':
-                opcaoMenu = menu();
-                verificaOpcao(opcaoMenu, ucs, quantUC);
             break;
             default:
                 printf("Opção Inválida");
