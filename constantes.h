@@ -9,6 +9,10 @@ typedef struct{
     int dia, mes, ano;
 }tipoData;
 
+typedef struct{
+    int hora, minuto, segundo;
+}tipoHora;
+
 //Declaração do Tipo de Aula
 typedef struct{
     int quantAulas;
@@ -26,5 +30,18 @@ typedef struct{
     tipoAula aulasTP;
     tipoAula aulasPL;
 }tipoUC;
+
+//Declaração das AulasOnline
+typedef struct{
+    char designacao[MAX_STRING];
+    char codigoUC[MAX_UC_CODIGO];
+    char tipo[3];
+    char nomeDocente[MAX_STRING];
+    tipoData data;
+    tipoHora horaInicio;
+    tipoHora horaFim;
+    char estado[2];
+    char gravacao[2];
+}tipoAulasOnline;
 
 #endif // CONSTANTES_H_INCLUDED
