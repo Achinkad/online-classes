@@ -7,14 +7,50 @@
 #include "funcoes_auxiliares.h"
 #include "funcoes_tipoAula.h"
 
+void mostrarUC(tipoUC uc){
+    if(strcmp(uc.tipoUC,"OB")==0){
+       printf("\nTipo de UC: Obrigatória");
+    }else if(strcmp(uc.tipoUC,"OP")==0){
+        printf("\nTipo de UC: Opcional");
+    }
+    printf("\nSemestre:%d", uc.semestre);
+    if(strcmp(uc.regime,"D")==0){
+       printf("\nRegime: Diurno");
+    }else if(strcmp(uc.regime,"PL")==0){
+        printf("\nRegime: Pos-laboral");
+    }
+    printf("\n%d Aulas T - %d minutos", uc.aulasT.quantAulas, uc.aulasT.duracao);
+    printf("\n%d Aulas TP - %d minutos", uc.aulasTP.quantAulas, uc.aulasTP.duracao);
+    printf("\n%d Aulas PL - %d minutos", uc.aulasPL.quantAulas, uc.aulasPL.duracao);
+}
+
 char menuGeralUC(){
     char op;
-    printf("--------- GESTAO DE UC'S ---------\n");
-    printf("I - Inserir nova UC\n");
-    printf("L - Listar UC's\n");
-    printf("E - Editar UC\n");
-    printf("S - Sair\n");
+    printf("\n\n--------- GESTAO DE UC'S ---------\n\n");
+    printf("\tI - Inserir nova UC\n");
+    printf("\tL - Listar UC's\n");
+    printf("\tE - Editar UC\n");
+    printf("\tS - Sair\n\n");
     printf("Insira uma opção: ");
+    scanf("%c", &op);
+    limpaBufferStdin();
+    op=toupper(op);
+    return op;
+}
+
+char menuEditarUC(tipoUC uc){
+    char op;
+    printf("\n\n--------- EDITAR UC %s - %s ---------\n", uc.codigo, uc.designacao);
+    mostrarUC(uc);
+    printf("\n\n\tA - Editar Designacao UC\n");
+    printf("\tB - Editar tipo de UC\n");
+    printf("\tC - Editar Semestre\n");
+    printf("\tD - Editar Regime\n");
+    printf("\tE - Editar Aulas T\n");
+    printf("\tF - Editar Aulas TP\n");
+    printf("\tG - Editar Aulas PL\n");
+    printf("\tS - Concluir Edicao\n");
+    printf("\nInsira uma opção: ");
     scanf("%c", &op);
     limpaBufferStdin();
     op=toupper(op);
@@ -51,20 +87,7 @@ void listarUCs(tipoUC ucs[MAX_UC], int quantUCs){
         printf("\n\n------------------ Início de Resultados --------------------\n");
         for(i=0;i<quantUCs;i++){
             printf("\nCódigo: %s - %s", ucs[i].codigo, ucs[i].designacao);
-            if(strcmp(ucs[i].tipoUC,"OB")==0){
-               printf("\nTipo de UC: Obrigatória");
-            }else if(strcmp(ucs[i].tipoUC,"OP")==0){
-                printf("\nTipo de UC: Opcional");
-            }
-            printf("\nSemestre:%d", ucs[i].semestre);
-            if(strcmp(ucs[i].regime,"D")==0){
-               printf("\nRegime: Diurno");
-            }else if(strcmp(ucs[i].regime,"PL")==0){
-                printf("\nRegime: Pos-laboral");
-            }
-            printf("\n%d Aulas T - %d minutos", ucs[i].aulasT.quantAulas, ucs[i].aulasT.duracao);
-            printf("\n%d Aulas TP - %d minutos", ucs[i].aulasTP.quantAulas, ucs[i].aulasTP.duracao);
-            printf("\n%d Aulas PL - %d minutos", ucs[i].aulasPL.quantAulas, ucs[i].aulasPL.duracao);
+            mostrarUC(ucs[i]);
             if(quantUCs-1!=i){
                 printf("\n------");
             }
@@ -75,9 +98,13 @@ void listarUCs(tipoUC ucs[MAX_UC], int quantUCs){
     }
 }
 
+
+
 void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
-    char opcao, codigo[MAX_STRING], opcaoMenu, opcaoSair;
+    char opcao, opcaoMenuEditar, codigo[MAX_STRING];
     int posicao;
+    char opcoesTipoUC[2][MAX_STRING]={"OB","OP"};
+    char opcoesRegime[2][MAX_STRING]={"D","PL"};
     do{
         opcao=menuGeralUC();
         switch(opcao){
@@ -98,12 +125,46 @@ void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
                 listarUCs(ucs,quantUC);
             break;
             case 'E':
-                printf("Editar UC");
+                lerString("Indique o código da UC a editar: ",codigo,MAX_STRING);
+                posicao=procuraUC(codigo,ucs,quantUC);
+                if(posicao!=-1){
+                    do{
+                        opcaoMenuEditar=menuEditarUC(ucs[posicao]);
+                        switch(opcaoMenuEditar){
+                            case 'A':
+                                lerString("Indique a designacao da UC: ", ucs[posicao].designacao, MAX_STRING);
+                            break;
+                            case 'B':
+                                lerOpcao("Indique o tipo de UC (OB)rigatoria ou (OP)cional: ", opcoesTipoUC, 2, ucs[posicao].tipoUC);
+                            break;
+                            case 'C':
+                                ucs[posicao].semestre=lerInteiro("Indique o Semestre (1-6)",1,6);
+                            break;
+                            case 'D':
+                                lerOpcao("Indique o Regime (D)iurno ou (PL)Pos-laboral: ", opcoesRegime, 2, ucs[posicao].regime);
+                            break;
+                            case 'E':
+                                ucs[posicao].aulasT=criarTipoAula("T");
+                            break;
+                            case 'F':
+                                ucs[posicao].aulasTP=criarTipoAula("TP");
+                            break;
+                            case 'G':
+                                ucs[posicao].aulasPL=criarTipoAula("PL");
+                            break;
+                            case 'S':
+                            break;
+                            default:
+                                printf("Opção Inválida");
+                            break;
+                        }
+                    }while(opcaoMenuEditar!='S');
+                    printf("\n\nEdicao concluida com sucesso! \n\n");
+                }else{
+                    printf("Código UC não encontrado!\n");
+                }
             break;
-            case 'S':
-                opcaoMenu = menu();
-                verificaOpcao(opcaoMenu, ucs, quantUC);
-            break;
+            case 'S': break;
             default:
                 printf("Opção Inválida");
             break;
