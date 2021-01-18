@@ -203,7 +203,7 @@ char menu()
     printf("Unidade Curriculares: 12\tAulas agendadas: 12\n");
     printf("Aulas realizadas: 21\t\tAulas gravadas: 3\n\n");
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
-    printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n");
+    printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n\tL - Limpar Terminal\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
     scanf("%c", &opcao);
@@ -215,12 +215,12 @@ char menu()
 // Verifica a opção escolhida na função "menu"
 void verificaOpcao(char opcao, tipoUC ucs[MAX_UC], int quantUC)
 {
-    if(opcao == 'A' || opcao == 'B' || opcao == 'C' || opcao == 'D' || opcao == 'E' || opcao == 'S')
+    char opcaoSair;
+    if(opcao == 'A' || opcao == 'B' || opcao == 'C' || opcao == 'D' || opcao == 'E' || opcao == 'L' || opcao == 'S')
     {
         switch(opcao)
         {
         case 'A':
-            system("clear");
             gestaoUCs(ucs,quantUC);
             break;
 

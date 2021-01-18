@@ -101,18 +101,8 @@ void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
                 printf("Editar UC");
             break;
             case 'S':
-                printf("Ao sair o seu terminal sera limpo. Pretende sair? (S/N): ");
-                scanf("%c", &opcaoSair);
-                limpaBufferStdin();
-                opcaoSair = toupper(opcaoSair);
-                if(opcaoSair == 'S')
-                {
-                    system("clear");
-                    opcaoMenu = menu();
-                    verificaOpcao(opcaoMenu, ucs, quantUC);
-                }else{
-                    gestaoUCs(ucs, quantUC);
-                }
+                opcaoMenu = menu();
+                verificaOpcao(opcaoMenu, ucs, quantUC);
             break;
             default:
                 printf("Opção Inválida");
