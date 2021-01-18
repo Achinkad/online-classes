@@ -100,7 +100,7 @@ void listarUCs(tipoUC ucs[MAX_UC], int quantUCs){
 
 
 
-void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
+void gestaoUCs(tipoUC ucs[MAX_UC], int *quantUC){
     char opcao, opcaoMenuEditar, codigo[MAX_STRING];
     int posicao;
     char opcoesTipoUC[2][MAX_STRING]={"OB","OP"};
@@ -111,22 +111,22 @@ void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
             case 'I':
                 do{
                     lerString("Indique o código da UC: ",codigo,MAX_STRING);
-                    posicao=procuraUC(codigo,ucs,quantUC);
+                    posicao=procuraUC(codigo,ucs,*quantUC);
                     if(posicao==-1){
-                        ucs[quantUC]=lerDadosUC();
-                        strcpy(ucs[quantUC].codigo,codigo);
-                        quantUC++;
+                        ucs[*quantUC]=lerDadosUC();
+                        strcpy(ucs[*quantUC].codigo,codigo);
+                        (*quantUC)++;
                     }else{
                         printf("Código UC já existe!\n");
                     }
                 }while(posicao!=-1);
             break;
             case 'L':
-                listarUCs(ucs,quantUC);
+                listarUCs(ucs,*quantUC);
             break;
             case 'E':
                 lerString("Indique o código da UC a editar: ",codigo,MAX_STRING);
-                posicao=procuraUC(codigo,ucs,quantUC);
+                posicao=procuraUC(codigo,ucs,*quantUC);
                 if(posicao!=-1){
                     do{
                         opcaoMenuEditar=menuEditarUC(ucs[posicao]);
@@ -170,4 +170,28 @@ void gestaoUCs(tipoUC ucs[MAX_UC], int quantUC){
             break;
         }
     }while(opcao!='S');
+}
+
+void leFichBinUCs(tipoUC ucs[MAX_UC], int *quantUC){
+    FILE *f;
+    f=fopen("dadosUC.dat", "rb");
+    if(f==NULL){
+        printf("\n\nImpossível aceder ao ficheiro!\n\n");
+    }else{
+        fread(&(*quantUC),sizeof(int),1,f);
+        fread(ucs,sizeof(tipoUC),*quantUC,f);
+        fclose(f);
+    }
+}
+
+void escreveFichBinUCs(tipoUC ucs[MAX_UC], int quantUC){
+    FILE *f;
+    f=fopen("dadosUC.dat", "wb");
+    if(f==NULL){
+        printf("\n\nImpossível aceder ao ficheiro!\n\n");
+    }else{
+        fwrite(&quantUC,sizeof(int),1,f);
+        fwrite(ucs,sizeof(tipoUC),quantUC,f);
+        fclose(f);
+    }
 }

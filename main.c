@@ -9,17 +9,68 @@
 #include "funcoes_uc.h"
 #include "funcoes_aulasOnline.h"
 
+char menu(int quantUC);
+char menuGestaoFicheiro();
+
 int main()
 {
     tipoUC ucs[MAX_UC];
-    int quantUC=0;
-    char opcao;
+    tipoAulasOnline *aulasOnline=NULL;
+    int quantUC=0, quantAulas=0;
+    char opcao, opcaosubMenu;
     setlocale(LC_ALL, "");
+
+    leFichBinUCs(ucs, &quantUC);
 
     do
     {
-        opcao = menu();
-        verificaOpcao(opcao, ucs, quantUC);
+        opcao = menu(quantUC);
+        switch(opcao)
+        {
+            case 'A':
+                gestaoUCs(ucs, &quantUC);
+                break;
+
+            case 'B':
+                gestaoAulas();
+                break;
+
+            case 'C':
+                do{
+                    opcaosubMenu = menuGestaoFicheiro();
+                    switch(opcaosubMenu){
+                        case 'E':
+                            escreveFichBinUCs(ucs,quantUC);
+                            break;
+                        case 'L':
+                            leFichBinUCs(ucs,&quantUC);
+                            break;
+                        case 'R':
+                            printf("Limpar dados da Aplicação!");
+                            break;
+                        case 'S':
+                            break;
+                        default:
+                            printf("\nOpcao Invalida!\n");
+                            break;
+                    }
+                }while(opcaosubMenu!='S');
+                break;
+
+            case 'D':
+                printf("Gestao de Dados Estatisticos\n\n");
+                break;
+
+            case 'E':
+                printf("Gestao de Acesso as Aulas Online\n\n");
+                break;
+
+            case 'S':
+                break;
+            default:
+                printf("\nOpcao Invalida!\n");
+                break;
+        }
     }
     while(opcao != 'S');
 
@@ -27,11 +78,11 @@ int main()
 }
 
 // Apresentação da estrutura do menu geral
-char menu()
+char menu(int quantUC)
 {
     char opcao;
-    printf("------------------ Menu Principal ------------------\n\n");
-    printf("Unidade Curriculares: 12\tAulas agendadas: 12\n");
+    printf("\n\n------------------ Menu Principal ------------------\n\n");
+    printf("Unidade Curriculares: %d \tAulas agendadas: 12\n", quantUC);
     printf("Aulas realizadas: 21\t\tAulas gravadas: 3\n\n");
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
     printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n");
@@ -43,43 +94,18 @@ char menu()
     return opcao;
 }
 
-// Verifica a opção escolhida na função "menu"
-void verificaOpcao(char opcao, tipoUC ucs[MAX_UC], int quantUC)
+// Apresentação da estrutura do submenu C
+char menuGestaoFicheiro()
 {
-    if(opcao == 'A' || opcao == 'B' || opcao == 'C' || opcao == 'D' || opcao == 'E' || opcao == 'S')
-    {
-        switch(opcao)
-        {
-        case 'A':
-            gestaoUCs(ucs, quantUC);
-            break;
-
-        case 'B':
-            gestaoAulas();
-            break;
-
-        case 'C':
-            printf("Gestao de Ficheiros\n\n");
-            break;
-
-        case 'D':
-            printf("Gestao de Dados Estatisticos\n\n");
-            break;
-
-        case 'E':
-            printf("Gestao de Acesso as Aulas Online\n\n");
-            break;
-
-        case 'S':
-            break;
-        }
-    }
-    else
-    {
-        printf("Opcao invalida. Por favor, insira uma opcao valida: ");
-        scanf("%c", &opcao);
-        limpaBufferStdin();
-        opcao = toupper(opcao);
-        verificaOpcao(opcao, ucs, quantUC);
-    }
+    char opcao;
+    printf("\n\n------------------ Gestao de Ficheiros ------------------\n\n");
+    printf("\tE - Escrever Ficheiros\n");
+    printf("\tL - Ler Ficheiro\n");
+    printf("\tR - Reiniciar dados da Aplicacao\n");
+    printf("\tS - Sair\n");
+    printf("\nInsira uma opcao: ");
+    scanf("%c", &opcao);
+    limpaBufferStdin();
+    opcao = toupper(opcao);
+    return opcao;
 }
