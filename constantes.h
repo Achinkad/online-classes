@@ -19,9 +19,9 @@ typedef struct{
 typedef struct{
     char codigo[MAX_UC_CODIGO];
     char designacao[MAX_STRING];
-    char tipoUC[2];
+    char tipoUC[3];
     int semestre;
-    char regime[2];
+    char regime[3];
     tipoAula aulasT;
     tipoAula aulasTP;
     tipoAula aulasPL;
