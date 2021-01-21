@@ -7,6 +7,7 @@ int lerInteiro(char mensagem[MAX_STRING], int minimo, int maximo);
 float lerFloat(char mensagem[MAX_STRING], float minimo, float maximo);
 void lerString(char mensagem[MAX_STRING], char vetorCaracteres[MAX_STRING], int maximoCaracteres);
 tipoData lerData(void);
+tipoHora lerHora(void);
 void limpaBufferStdin(void);
 void lerOpcao(char mensagem[MAX_STRING], char opcoes[][MAX_STRING], int quantos, char opcao[MAX_STRING]);
 char menu();

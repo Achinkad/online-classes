@@ -12,7 +12,7 @@ int lerInteiro(char mensagem[MAX_STRING], int minimo, int maximo)
     int numero, controlo;
     do
     {
-        printf("%s (%d a %d) :", mensagem, minimo, maximo);
+        printf("%s (%d a %d): ", mensagem, minimo, maximo);
         controlo = scanf ("%d", &numero);  // scanf devolve quantidade de valores vàlidos obtidos
         limpaBufferStdin();     //limpa todos os caracteres do buffer stdin (nomeadamente o \n)
 
@@ -100,8 +100,8 @@ tipoData lerData(void)
     tipoData data;
     int maxDiasMes;
 
-    data.ano = lerInteiro(" ano", 2014, 2021);
-    data.mes = lerInteiro(" mes", 1, 12);
+    data.ano = lerInteiro("Ano", 2020, 2025);
+    data.mes = lerInteiro("Mes", 1, 12);
 
     switch (data.mes)
     {
@@ -125,10 +125,18 @@ tipoData lerData(void)
         maxDiasMes = 31;
     }
 
-    data.dia = lerInteiro(" dia:", 1, maxDiasMes);
-
+    data.dia = lerInteiro("Dia", 1, maxDiasMes);
 
     return data;
+}
+
+tipoHora lerHora(void)
+{
+    tipoHora hora;
+    hora.hora = lerInteiro("Hora", 0, 23);
+    hora.minuto = lerInteiro("Minuto", 0, 59);
+    hora.segundo = lerInteiro("Segundo", 0, 59);
+    return hora;
 }
 
 void limpaBufferStdin(void)

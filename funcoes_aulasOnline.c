@@ -45,9 +45,12 @@ tipoAulasOnline lerDadosAulas()
     lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, e.tipo);
     lerOpcao("Indique o estado da aula.\n\tA - Agendada \n\tD - A decorrer\n\tR - Realizada\nOpcao: ", opcoesEstado, 3, e.estado);
     lerOpcao("Pretende que a aula seja gravada?\n\tS - Sim \n\tN - Nao\nOpcao: ", opcoesGravacao, 2, e.gravacao);
-    //e.data = lerData();
-    //e.horaInicio = lerHora();
-    //e.horaFim = lerHora();
+    printf("Inserir data da aula.\n");
+    e.data = lerData();
+    printf("Inserir hora do inicio de aula.\n");
+    e.horaInicio = lerHora();
+    printf("Inserir hora do termino da aula.\n");
+    e.horaFim = lerHora();
     return e;
 }
 
@@ -87,8 +90,9 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
         printf("------------------ Inicio dos Resultados ------------------\n\n");
         for(i=0; i<quantAulas; i++)
         {
-            printf("Designação da aula: %s\n", aulasOnline[i].designacao);
-            printf("Nome do docente: %s\n", aulasOnline[i].nomeDocente);
+            printf("Quantidade de aulas: %d", quantAulas);
+            //printf("Designação da aula: %s\n", aulasOnline[i].designacao);
+            //printf("Nome do docente: %s\n", aulasOnline[i].nomeDocente);
         }
         printf("------------------ Fim dos Resultados ------------------\n\n");
     }
