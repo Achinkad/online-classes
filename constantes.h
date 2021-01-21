@@ -31,7 +31,7 @@ typedef struct{
     tipoAula aulasPL;
 }tipoUC;
 
-//Declaração das AulasOnline
+//Declaração das Aulas Online
 typedef struct{
     char designacao[MAX_STRING];
     char codigoUC[MAX_UC_CODIGO];
@@ -40,8 +40,8 @@ typedef struct{
     tipoData data;
     tipoHora horaInicio;
     tipoHora horaFim;
-    char estado;
-    char gravacao;
+    char estado[3];
+    char gravacao[2];
 }tipoAulasOnline;
 
 #endif // CONSTANTES_H_INCLUDED

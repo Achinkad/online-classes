@@ -3,8 +3,10 @@
 
 #include "constantes.h"
 
-char menuAulas();
-void gestaoAulas();
-void verificaOpcaoAula(char opcao);
+tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas);
+tipoAulasOnline lerDadosAulas();
+void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas);
+void mostraAulas(tipoAulasOnline aulasOnline);
+int procuraAula(char designacao, tipoAulasOnline aulasOnline[], int quantAulas);
 
 #endif // FUNCOES_AULASONLINE_H_INCLUDED
