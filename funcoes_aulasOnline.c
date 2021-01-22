@@ -79,7 +79,7 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
         }
     }
 
-    return pAulasOnline;
+    return aulasOnline;
 }
 
 void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
@@ -91,8 +91,7 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
         for(i=0; i<quantAulas; i++)
         {
             printf("Quantidade de aulas: %d", quantAulas);
-            //printf("Designação da aula: %s\n", aulasOnline[i].designacao);
-            //printf("Nome do docente: %s\n", aulasOnline[i].nomeDocente);
+            mostraAulas(aulasOnline[i]);
         }
         printf("------------------ Fim dos Resultados ------------------\n\n");
     }
