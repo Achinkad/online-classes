@@ -41,7 +41,7 @@ int main()
                 switch(opcaosubMenu)
                 {
                 case 'A':
-                    aulasOnline = agendaAula(aulasOnline, &quantAulas);
+                    aulasOnline = agendaAula(aulasOnline, &quantAulas, ucs, quantUC);
                     break;
 
                 case 'B':

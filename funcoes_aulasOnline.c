@@ -5,6 +5,7 @@
 
 #include "constantes.h"
 #include "funcoes_auxiliares.h"
+#include "funcoes_uc.h"
 
 // Funcao para apresentar os dados relativos a uma aula online
 void mostraAulas(tipoAulasOnline aulasOnline)
@@ -60,8 +61,10 @@ void mostraAulas(tipoAulasOnline aulasOnline)
 int procuraAula(char designacao[MAX_STRING], tipoAulasOnline aulasOnline[], int quantAulas)
 {
     int i, pos = -1;
-    for(i=0; i < quantAulas; i++){
-        if(strcmp(aulasOnline[i].designacao, designacao) == 0){
+    for(i=0; i < quantAulas; i++)
+    {
+        if(strcmp(aulasOnline[i].designacao, designacao) == 0)
+        {
             pos = i;
         }
     }
@@ -73,9 +76,8 @@ tipoAulasOnline lerDadosAulas()
 {
     tipoAulasOnline e;
     char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
-    lerString("Indique o codigo da UC: ", e.codigoUC, MAX_UC_CODIGO);
     lerString("Indique o nome do docente: ", e.nomeDocente, MAX_STRING);
-    lerOpcao("Indique o tipo de aula.\nT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, e.tipo);
+    lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, e.tipo);
     printf("Inserir data da aula.\n");
     e.data = lerData();
     printf("\n\n");
@@ -83,25 +85,49 @@ tipoAulasOnline lerDadosAulas()
 }
 
 // Funcao que armazena os dados
-tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
+tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC)
 {
-    int pos;
-    char designacao[MAX_STRING];
+    int posAula, posUC, i;
+    char designacao[MAX_STRING], codigoUC[MAX_UC_CODIGO];
     tipoAulasOnline *pAulasOnline, dados;
     pAulasOnline = aulasOnline;
 
     lerString("Indique a designacao da aula: ", designacao, MAX_STRING);
-    pos = procuraAula(designacao, pAulasOnline, *quantAulas);
+    posAula = procuraAula(designacao, pAulasOnline, *quantAulas);
 
-    if(pos != -1){
+    lerString("Indique o codigo da UC: ", codigoUC, MAX_UC_CODIGO);
+    posUC = procuraUC(codigoUC, ucs, quantUC);
+
+    if(posAula != -1)
+    {
         printf("Designacao da aula já existe!\n");
-    }else{
+    }
+    else if(posUC == -1)
+    {
+        if(quantUC > 0)
+        {
+            printf("Codigo da UC nao existente! %d opcoes possiveis:\n", quantUC);
+            for(i = 0; i < quantUC; i++)
+            {
+                printf("%s: %s\n", ucs[i].designacao, ucs[i].codigo);
+            }
+            printf("\n");
+        }
+        else{
+            printf("O codigo da UC nao existe, porque nao ha ucs inseridas!\n");
+        }
+    }
+    else
+    {
         dados = lerDadosAulas();
         aulasOnline = realloc(aulasOnline,(*quantAulas+1)*sizeof(tipoAulasOnline));
-        if(aulasOnline == NULL){
+        if(aulasOnline == NULL)
+        {
             printf("Erro! Impossivel agendar aula.");
             aulasOnline = pAulasOnline;
-        }else{
+        }
+        else
+        {
             aulasOnline[*quantAulas] = dados;
             strcpy(aulasOnline[*quantAulas].designacao, designacao);
             (*quantAulas)++;
@@ -116,12 +142,16 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
     if(quantAulas > 0)
     {
         printf("\n\n------------------ Inicio dos Resultados ------------------\n\n");
+        printf("Quantidade de aulas: %d\t\t", quantAulas);
         for(i=0; i<quantAulas; i++)
         {
-            printf("Quantidade de aulas: %d", quantAulas);
             mostraAulas(aulasOnline[i]);
+            if(quantAulas-1 != i)
+            {
+                printf("\n-----------");
+            }
         }
-        printf("------------------ Fim dos Resultados ------------------\n\n");
+        printf("\n\n------------------ Fim dos Resultados ------------------\n\n");
     }
     else
     {
@@ -129,20 +159,27 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
     }
 }
 
-tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantAulas){
+tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantAulas)
+{
     FILE *f;
     tipoAulasOnline *pAulasOnline;
     f=fopen("dadosAulasOnline.dat", "rb");
-    if(f==NULL){
+    if(f==NULL)
+    {
         printf("\n\nNao foi possivel encontrar o ficheiro de Dados das Aulas Online!\n\n");
-    }else{
+    }
+    else
+    {
         fread(&(*quantAulas),sizeof(int),1,f);
         pAulasOnline = aulasOnline;
         aulasOnline = realloc(aulasOnline,(*quantAulas)*sizeof(tipoAulasOnline));
-        if(aulasOnline == NULL && *quantAulas != 0){
+        if(aulasOnline == NULL && *quantAulas != 0)
+        {
             printf("\nErro! (erro ao reservar a memória)");
             aulasOnline=pAulasOnline;
-        }else{
+        }
+        else
+        {
             fread(aulasOnline,sizeof(tipoAulasOnline),*quantAulas,f);
         }
         fclose(f);
@@ -150,12 +187,16 @@ tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantA
     return aulasOnline;
 }
 
-void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas){
+void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas)
+{
     FILE *f;
     f=fopen("dadosAulasOnline.dat", "wb");
-    if(f==NULL){
+    if(f==NULL)
+    {
         printf("\n\nNao foi possivel encontrar o ficheiro de Dados das Aulas Online!\n\n");
-    }else{
+    }
+    else
+    {
         fwrite(&quantAulas,sizeof(int),1,f);
         fwrite(aulasOnline,sizeof(tipoAulasOnline),quantAulas,f);
         fclose(f);

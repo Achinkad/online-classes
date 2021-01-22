@@ -3,12 +3,11 @@
 
 #include "constantes.h"
 
-tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas);
+tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC);
 tipoAulasOnline lerDadosAulas();
 void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas);
 void mostraAulas(tipoAulasOnline aulasOnline);
 int procuraAula(char designacao, tipoAulasOnline aulasOnline[], int quantAulas);
-
 tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantAulas);
 void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas);
 
