@@ -60,8 +60,8 @@ char menuEditarUC(tipoUC uc){
 int procuraUC(char codigo[MAX_STRING], tipoUC vetor[MAX_UC], int quantos){
     int i, posicao=-1;
     for(i=0;i<quantos;i++){
-        if(strcmp(vetor[i].codigo,codigo)==0){
-            posicao=i;
+        if(strcmp(vetor[i].codigo,codigo) == 0){
+            posicao = i;
         }
     }
     return posicao;

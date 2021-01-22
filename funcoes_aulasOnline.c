@@ -95,14 +95,15 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
     lerString("Indique a designacao da aula: ", designacao, MAX_STRING);
     posAula = procuraAula(designacao, pAulasOnline, *quantAulas);
 
-    lerString("Indique o codigo da UC: ", codigoUC, MAX_UC_CODIGO);
-    posUC = procuraUC(codigoUC, ucs, quantUC);
-
     if(posAula != -1)
     {
         printf("Designacao da aula já existe!\n");
     }
-    else if(posUC == -1)
+
+    lerString("Indique o codigo da UC: ", codigoUC, MAX_UC_CODIGO);
+    posUC = procuraUC(codigoUC, ucs, quantUC);
+
+    if(posUC == -1)
     {
         if(quantUC > 0)
         {
@@ -113,7 +114,8 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
             }
             printf("\n");
         }
-        else{
+        else
+        {
             printf("O codigo da UC nao existe, porque nao ha ucs inseridas!\n");
         }
     }
