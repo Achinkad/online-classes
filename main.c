@@ -9,7 +9,7 @@
 #include "funcoes_uc.h"
 #include "funcoes_aulasOnline.h"
 
-char menu(int quantUC);
+char menu(int quantUC, int quantAulas);
 char menuGestaoFicheiro();
 char menuAulas();
 
@@ -22,10 +22,11 @@ int main()
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
+    aulasOnline=leFichBinAulasOnline(aulasOnline, &quantAulas);
 
     do
     {
-        opcao = menu(quantUC);
+        opcao = menu(quantUC, quantAulas);
         switch(opcao)
         {
         case 'A':
@@ -76,6 +77,7 @@ int main()
                 {
                 case 'E':
                     escreveFichBinUCs(ucs,quantUC);
+                    escreveFichBinAulasOnline(aulasOnline, quantAulas);
                     break;
                 case 'L':
                     leFichBinUCs(ucs,&quantUC);
@@ -116,11 +118,11 @@ int main()
 }
 
 // Apresentação da estrutura do menu geral
-char menu(int quantUC)
+char menu(int quantUC, int quantAulas)
 {
     char opcao;
     printf("------------------ Menu Principal ------------------\n\n");
-    printf("Unidade Curriculares: %d \tAulas agendadas: 12\n", quantUC);
+    printf("Unidade Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulas);
     printf("Aulas realizadas: 21\t\tAulas gravadas: 3\n\n");
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
     printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n");

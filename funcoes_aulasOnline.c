@@ -128,3 +128,36 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
         printf("Nao existem aulas registadas no sistema.\n\n");
     }
 }
+
+tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantAulas){
+    FILE *f;
+    tipoAulasOnline *pAulasOnline;
+    f=fopen("dadosAulasOnline.dat", "rb");
+    if(f==NULL){
+        printf("\n\nNao foi possivel encontrar o ficheiro de Dados das Aulas Online!\n\n");
+    }else{
+        fread(&(*quantAulas),sizeof(int),1,f);
+        pAulasOnline = aulasOnline;
+        aulasOnline = realloc(aulasOnline,(*quantAulas)*sizeof(tipoAulasOnline));
+        if(aulasOnline == NULL && *quantAulas != 0){
+            printf("\nErro! (erro ao reservar a memória)");
+            aulasOnline=pAulasOnline;
+        }else{
+            fread(aulasOnline,sizeof(tipoAulasOnline),*quantAulas,f);
+        }
+        fclose(f);
+    }
+    return aulasOnline;
+}
+
+void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas){
+    FILE *f;
+    f=fopen("dadosAulasOnline.dat", "wb");
+    if(f==NULL){
+        printf("\n\nNao foi possivel encontrar o ficheiro de Dados das Aulas Online!\n\n");
+    }else{
+        fwrite(&quantAulas,sizeof(int),1,f);
+        fwrite(aulasOnline,sizeof(tipoAulasOnline),quantAulas,f);
+        fclose(f);
+    }
+}

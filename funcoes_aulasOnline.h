@@ -9,4 +9,7 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas);
 void mostraAulas(tipoAulasOnline aulasOnline);
 int procuraAula(char designacao, tipoAulasOnline aulasOnline[], int quantAulas);
 
+tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantAulas);
+void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas);
+
 #endif // FUNCOES_AULASONLINE_H_INCLUDED

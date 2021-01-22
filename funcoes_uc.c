@@ -176,7 +176,7 @@ void leFichBinUCs(tipoUC ucs[MAX_UC], int *quantUC){
     FILE *f;
     f=fopen("dadosUC.dat", "rb");
     if(f==NULL){
-        printf("\n\nImpossível aceder ao ficheiro!\n\n");
+        printf("\n\nNao foi possivel encontrar o ficheiro de UC's!\n\n");
     }else{
         fread(&(*quantUC),sizeof(int),1,f);
         fread(ucs,sizeof(tipoUC),*quantUC,f);
@@ -188,7 +188,7 @@ void escreveFichBinUCs(tipoUC ucs[MAX_UC], int quantUC){
     FILE *f;
     f=fopen("dadosUC.dat", "wb");
     if(f==NULL){
-        printf("\n\nImpossível aceder ao ficheiro!\n\n");
+        printf("\n\nNao foi possivel encontrar o ficheiro de UC's!\n\n");
     }else{
         fwrite(&quantUC,sizeof(int),1,f);
         fwrite(ucs,sizeof(tipoUC),quantUC,f);
