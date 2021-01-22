@@ -6,9 +6,14 @@
 #include "constantes.h"
 #include "funcoes_auxiliares.h"
 
+// Funcao para apresentar os dados relativos a uma aula online
 void mostraAulas(tipoAulasOnline aulasOnline)
 {
-    printf("\nUC associada: %s", aulasOnline.codigoUC);
+    printf("\nDesignacao: %s", aulasOnline.designacao);
+    printf("\nCodigo da UC: %s", aulasOnline.codigoUC);
+    printf("\nNome do docente: %s", aulasOnline.nomeDocente);
+
+    // Apresentação do tipo de aula (T/TP/PL)
     if(strcmp(aulasOnline.tipo, "T") == 0)
     {
         printf("\nTipo de aula: Teorica");
@@ -21,8 +26,37 @@ void mostraAulas(tipoAulasOnline aulasOnline)
     {
         printf("\nTipo de aula: Pratica");
     }
+
+    // Apresentação do estado da aula (A/D/R)
+    if(strcmp(aulasOnline.estado, "A") == 0)
+    {
+        printf("\nEstado da aula: Agendada");
+    }
+    else if(strcmp(aulasOnline.estado, "D") == 0)
+    {
+        printf("\nEstado da aula: A decorrer");
+    }
+    else
+    {
+        printf("\nEstado da aula: Realizada");
+    }
+
+    // Apresentação da decisão da gravação da aula (S/N)
+    if(strcmp(aulasOnline.gravacao, "S") == 0)
+    {
+        printf("\nGravacao: Sim");
+    }
+    else
+    {
+        printf("\nGravacao: Nao");
+    }
+
+    printf("\nData da aula: %d/%d/%d", aulasOnline.data.dia, aulasOnline.data.mes, aulasOnline.data.ano);
+    printf("\nHora de inicio: %d:%d:%d", aulasOnline.horaInicio.hora, aulasOnline.horaInicio.minuto, aulasOnline.horaInicio.segundo);
+    printf("\nHora de fim: %d:%d:%d", aulasOnline.horaFim.hora, aulasOnline.horaFim.minuto, aulasOnline.horaFim.segundo);
 }
 
+// Funcao que procura a designacao de uma aula e verifica a sua existencia
 int procuraAula(char designacao[MAX_STRING], tipoAulasOnline aulasOnline[], int quantAulas)
 {
     int i, pos = -1;
@@ -34,6 +68,7 @@ int procuraAula(char designacao[MAX_STRING], tipoAulasOnline aulasOnline[], int 
     return pos;
 }
 
+// Funcao que le os dados da estrutura tipoAulasOnline e retorna os seus valores
 tipoAulasOnline lerDadosAulas()
 {
     tipoAulasOnline e;
@@ -51,9 +86,11 @@ tipoAulasOnline lerDadosAulas()
     e.horaInicio = lerHora();
     printf("Inserir hora do termino da aula.\n");
     e.horaFim = lerHora();
+    printf("\n\n");
     return e;
 }
 
+// Funcao que armazena os dados
 tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
 {
     int pos;
@@ -78,7 +115,6 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
             (*quantAulas)++;
         }
     }
-
     return pAulasOnline;
 }
 
@@ -87,12 +123,10 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
     int i;
     if(quantAulas > 0)
     {
-        printf("------------------ Inicio dos Resultados ------------------\n\n");
+        printf("\n\n------------------ Inicio dos Resultados ------------------\n\n");
         for(i=0; i<quantAulas; i++)
         {
-            printf("Quantidade de aulas: %d", quantAulas);
-            //printf("Designação da aula: %s\n", aulasOnline[i].designacao);
-            //printf("Nome do docente: %s\n", aulasOnline[i].nomeDocente);
+            mostraAulas(aulasOnline[i]);
         }
         printf("------------------ Fim dos Resultados ------------------\n\n");
     }
