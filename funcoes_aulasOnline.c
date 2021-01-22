@@ -73,19 +73,11 @@ tipoAulasOnline lerDadosAulas()
 {
     tipoAulasOnline e;
     char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
-    char opcoesEstado[3][MAX_STRING] = {"A","D","R"};
-    char opcoesGravacao[2][MAX_STRING] = {"S","N"};
     lerString("Indique o codigo da UC: ", e.codigoUC, MAX_UC_CODIGO);
     lerString("Indique o nome do docente: ", e.nomeDocente, MAX_STRING);
-    lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, e.tipo);
-    lerOpcao("Indique o estado da aula.\n\tA - Agendada \n\tD - A decorrer\n\tR - Realizada\nOpcao: ", opcoesEstado, 3, e.estado);
-    lerOpcao("Pretende que a aula seja gravada?\n\tS - Sim \n\tN - Nao\nOpcao: ", opcoesGravacao, 2, e.gravacao);
+    lerOpcao("Indique o tipo de aula.\nT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, e.tipo);
     printf("Inserir data da aula.\n");
     e.data = lerData();
-    printf("Inserir hora do inicio de aula.\n");
-    e.horaInicio = lerHora();
-    printf("Inserir hora do termino da aula.\n");
-    e.horaFim = lerHora();
     printf("\n\n");
     return e;
 }
