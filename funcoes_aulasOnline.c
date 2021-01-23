@@ -52,9 +52,25 @@ void mostraAulas(tipoAulasOnline aulasOnline)
         printf("\nGravacao: Nao");
     }
 
-    printf("\nData da aula: %d/%d/%d", aulasOnline.data.dia, aulasOnline.data.mes, aulasOnline.data.ano);
-    printf("\nHora de inicio: %d:%d:%d", aulasOnline.horaInicio.hora, aulasOnline.horaInicio.minuto, aulasOnline.horaInicio.segundo);
-    printf("\nHora de fim: %d:%d:%d", aulasOnline.horaFim.hora, aulasOnline.horaFim.minuto, aulasOnline.horaFim.segundo);
+    printf("\nData da aula: %.2d/%.2d/%d", aulasOnline.data.dia, aulasOnline.data.mes, aulasOnline.data.ano);
+
+    if(aulasOnline.horaInicio.hora != -1 && aulasOnline.horaInicio.minuto != -1 && aulasOnline.horaInicio.segundo != -1)
+    {
+        printf("\nHora de inicio: %.2d:%.2d:%.2d", aulasOnline.horaInicio.hora, aulasOnline.horaInicio.minuto, aulasOnline.horaInicio.segundo);
+    }
+    else
+    {
+        printf("\nHora de inicio: N/A");
+    }
+
+    if(aulasOnline.horaFim.hora != -1 && aulasOnline.horaFim.minuto != -1 && aulasOnline.horaFim.segundo != -1)
+    {
+        printf("\nHora de fim: %.2d:%.2d:%.2d", aulasOnline.horaFim.hora, aulasOnline.horaFim.minuto, aulasOnline.horaFim.segundo);
+    }
+    else
+    {
+        printf("\nHora de inicio: N/A");
+    }
 }
 
 // Funcao que procura a designacao de uma aula e verifica a sua existencia
@@ -132,6 +148,15 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
         {
             aulasOnline[*quantAulas] = dados;
             strcpy(aulasOnline[*quantAulas].designacao, designacao);
+            strcpy(aulasOnline[*quantAulas].codigoUC, codigoUC);
+            strcpy(aulasOnline[*quantAulas].estado, "A");
+            strcpy(aulasOnline[*quantAulas].gravacao, "N");
+            aulasOnline[*quantAulas].horaInicio.hora = -1;
+            aulasOnline[*quantAulas].horaInicio.minuto = -1;
+            aulasOnline[*quantAulas].horaInicio.segundo = -1;
+            aulasOnline[*quantAulas].horaFim.hora = -1;
+            aulasOnline[*quantAulas].horaFim.minuto = -1;
+            aulasOnline[*quantAulas].horaFim.segundo = -1;
             (*quantAulas)++;
         }
     }
@@ -144,16 +169,16 @@ void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
     if(quantAulas > 0)
     {
         printf("\n\n------------------ Inicio dos Resultados ------------------\n\n");
-        printf("Quantidade de aulas: %d\t\t", quantAulas);
+        printf("Quantidade de aulas: %d\n\n", quantAulas);
         for(i=0; i<quantAulas; i++)
         {
             mostraAulas(aulasOnline[i]);
             if(quantAulas-1 != i)
             {
-                printf("\n-----------");
+                printf("\n\n-----------\n");
             }
         }
-        printf("\n\n------------------ Fim dos Resultados ------------------\n\n");
+        printf("\n\n------------------ Fim dos Resultados ------------------\n\n\n");
     }
     else
     {
@@ -202,5 +227,195 @@ void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas)
         fwrite(&quantAulas,sizeof(int),1,f);
         fwrite(aulasOnline,sizeof(tipoAulasOnline),quantAulas,f);
         fclose(f);
+    }
+}
+
+char menuEditarAula(tipoAulasOnline aula)
+{
+    char op;
+
+    printf("\n\n----------------- Edicao da aula: %s -----------------\n", aula.designacao);
+
+    // Dados da aula online a editar
+    printf("\nDesignacao da aula: %s", aula.designacao);
+    printf("\t\tCodigo da UC associada: %s", aula.codigoUC);
+    printf("\nNome do docente: %s", aula.nomeDocente);
+
+    // Apresentação do tipo de aula (T/TP/PL)
+    if(strcmp(aula.tipo, "T") == 0)
+    {
+        printf("\t\t\tTipo de aula: Teorica");
+    }
+    else if(strcmp(aula.tipo, "TP") == 0)
+    {
+        printf("\t\t\tTipo de aula: Teorica-Pratica");
+    }
+    else
+    {
+        printf("\t\t\tTipo de aula: Pratica");
+    }
+
+    // Apresentação do estado da aula (A/D/R)
+    if(strcmp(aula.estado, "A") == 0)
+    {
+        printf("\nEstado da aula: Agendada");
+    }
+    else if(strcmp(aula.estado, "D") == 0)
+    {
+        printf("\nEstado da aula: A decorrer");
+    }
+    else
+    {
+        printf("\nEstado da aula: Realizada");
+    }
+
+    // Apresentação da decisão da gravação da aula (S/N)
+    if(strcmp(aula.gravacao, "S") == 0)
+    {
+        printf("\t\tGravacao: Sim");
+    }
+    else
+    {
+        printf("\t\tGravacao: Nao");
+    }
+
+    printf("\nData da aula: %.2d/%.2d/%.2d", aula.data.dia, aula.data.mes, aula.data.ano);
+    if(aula.horaInicio.hora != -1 && aula.horaInicio.minuto != -1 && aula.horaInicio.segundo != -1)
+    {
+        printf("\nHora de inicio: %.2d:%.2d:%.2d", aula.horaInicio.hora, aula.horaInicio.minuto, aula.horaInicio.segundo);
+    }
+
+    if(aula.horaFim.hora != -1 && aula.horaFim.minuto != -1 && aula.horaFim.segundo != -1)
+    {
+        printf("\nHora de fim: %.2d:%.2d:%.2d", aula.horaFim.hora, aula.horaFim.minuto, aula.horaFim.segundo);
+    }
+
+    // Menu de edição de aulas online com verificações
+    printf("\n\n\tA - Editar codigo da UC associada");
+    printf("\n\tB - Editar o nome do docente");
+    printf("\n\tC - Editar tipo de aula");
+    printf("\n\tD - Editar estado da aula");
+
+    if(strcmp(aula.estado, "R") != 0)
+    {
+        printf("\n\tE - Editar o tipo de gravacao");
+    }
+
+    printf("\n\tF - Editar a data da aula");
+
+    if(aula.horaInicio.hora != -1 && aula.horaInicio.minuto != -1 && aula.horaInicio.segundo != -1)
+    {
+        printf("\n\tG - Editar a hora de inicio da aula");
+    }
+
+    if(aula.horaFim.hora != -1 && aula.horaFim.minuto != -1 && aula.horaFim.segundo != -1)
+    {
+        printf("\n\tH - Editar a hora do fim da aula");
+    }
+
+    printf("\n\tS - Concluir edicao");
+    printf("\n\nInsira uma opcao: ");
+    scanf("%c", &op);
+    limpaBufferStdin();
+    op = toupper(op);
+    return op;
+}
+
+void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[MAX_UC], int quantUC)
+{
+    char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
+    char opcoesEstado[3][MAX_STRING] = {"A","D","R"};
+    char opcoesGravacao[2][MAX_STRING] = {"S","N"};
+    char designacao[MAX_STRING], opcaoMenu, novoCodigoUC[MAX_UC_CODIGO];
+    int pos, posUC, i;
+
+    lerString("Indique a designacao da aula a editar: ", designacao, MAX_STRING);
+    pos = procuraAula(designacao, aulasOnline, quantAulas);
+
+    if(pos != -1)
+    {
+        do
+        {
+            opcaoMenu = menuEditarAula(aulasOnline[pos]);
+            switch(opcaoMenu)
+            {
+            case 'A':
+                lerString("Indique o codigo da UC a substituir: ", novoCodigoUC, MAX_UC_CODIGO);
+                posUC = procuraUC(novoCodigoUC, ucs, quantUC);
+                if(posUC != -1)
+                {
+                    strcpy(aulasOnline[pos].codigoUC, novoCodigoUC);
+                    printf("Codigo da UC editado com sucesso!\n");
+                }
+                else
+                {
+                    if(quantUC > 0)
+                    {
+                        printf("Codigo da UC inexistente! %d opcoes possiveis:\n", quantUC);
+                        for(i = 0; i < quantUC; i++)
+                        {
+                            printf("- %s: %s\n", ucs[i].designacao, ucs[i].codigo);
+                        }
+                    }
+                    else
+                    {
+                        printf("O codigo da UC nao existe, porque nao ha ucs inseridas!\n");
+                    }
+                }
+                break;
+            case 'B':
+                lerString("Indique o novo nome do docente: ", aulasOnline[pos].nomeDocente, MAX_STRING);
+                printf("Nome do docente editado com sucesso!\n");
+                break;
+            case 'C':
+                lerOpcao("Indique o novo tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, aulasOnline[pos].tipo);
+                printf("Tipo de aula editado com sucesso!\n");
+                break;
+            case 'D':
+                lerOpcao("Indique o estado de aula.\n\tA - Agendada \n\tD - A decorrer\n\tR - Realizada\nOpcao: ", opcoesEstado, 3, aulasOnline[pos].estado);
+                printf("Estado de aula editado com sucesso!\n");
+                break;
+            case 'E':
+                if(strcmp(aulasOnline[pos].estado, "R") != 0)
+                {
+                    lerOpcao("Indique o novo estado de gravacao.\n\tS - Sim \n\tN - Nao\nOpcao: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
+                    printf("Estado de gravacao da aula editado com sucesso!\n");
+                }
+                break;
+            case 'F':
+                aulasOnline[pos].data = lerData();
+                printf("Data da aula editada com sucesso!\n");
+                break;
+            case 'G':
+                if(aulasOnline[pos].horaInicio.hora != -1 && aulasOnline[pos].horaInicio.minuto != -1 && aulasOnline[pos].horaInicio.segundo != -1)
+                {
+                    aulasOnline[pos].horaInicio = lerHora();
+                    printf("Hora de inicio de aula editada com sucesso!\n");
+                }
+                break;
+            case 'H':
+                if(aulasOnline[pos].horaFim.hora != -1 && aulasOnline[pos].horaFim.minuto != -1 && aulasOnline[pos].horaFim.segundo != -1)
+                {
+                    aulasOnline[pos].horaFim = lerHora();
+                    printf("Hora de fim de aula editada com sucesso!\n");
+                }
+                break;
+            case 'S':
+                break;
+            default:
+                printf("Opção invalida!");
+                break;
+            }
+        }
+        while(opcaoMenu != 'S');
+    }
+    else
+    {
+        printf("Designacao de aula inexistente. Há %d opcoes possiveis:", quantAulas);
+        for(i=0; i<quantAulas; i++)
+        {
+            printf("\n- %s", aulasOnline[i].designacao);
+        }
+        printf("\n\n");
     }
 }

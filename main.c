@@ -17,8 +17,8 @@ int main()
 {
     tipoUC ucs[MAX_UC];
     tipoAulasOnline *aulasOnline = NULL;
-    int quantUC=0, quantAulas=0;
-    char opcao, opcaosubMenu;
+    int quantUC=0, quantAulas=0, pos;
+    char opcao, opcaosubMenu, designacao[MAX_STRING];
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
@@ -45,7 +45,7 @@ int main()
                     break;
 
                 case 'B':
-                    printf("Alterar aula agendada\n\n");
+                    editarAula(aulasOnline, quantAulas, ucs, quantUC);
                     break;
 
                 case 'C':

@@ -10,5 +10,7 @@ void mostraAulas(tipoAulasOnline aulasOnline);
 int procuraAula(char designacao, tipoAulasOnline aulasOnline[], int quantAulas);
 tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantAulas);
 void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas);
+void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[MAX_UC], int quantUC);
+char menuEditarAula(tipoAulasOnline aula);
 
 #endif // FUNCOES_AULASONLINE_H_INCLUDED
