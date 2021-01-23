@@ -108,7 +108,7 @@ int main()
                     break;
 
                 case 'D':
-                    if(quantAulas > 0 && quantAulasDecorrer > 0)
+                    if(quantAulas > 0)
                     {
                         finalizarAula(aulasOnline, quantAulas);
                     }

@@ -490,15 +490,13 @@ void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas)
     lerString("Indique a designacao da aula a registar inicio: ", designacao, MAX_STRING);
     pos = procuraAula(designacao, aulasOnline, quantAulas);
 
-    printf("TESTESTSETSTTETSTETST: %d, %s\n\n\n", pos, aulasOnline[pos].estado);
-
-    if(pos != -1 && strcmp(aulasOnline[pos].designacao, "A") == 0)
+    if(pos != -1 && strcmp(aulasOnline[pos].estado, "A") == 0)
     {
         printf("Insira a hora de início da aula.\n");
         aulasOnline[pos].horaInicio = lerHora();
-        lerOpcao("Pretende gravar a aula? (S)im / (N)ão: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
+        lerOpcao("Pretende gravar a aula? (S)im/(N)ão: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
         strcpy(aulasOnline[pos].estado, "D");
-        printf("Início de aula registada com sucesso!.\n");
+        printf("Início de aula registada com sucesso!\n\n");
     }
     else
     {
@@ -522,12 +520,12 @@ void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas)
     lerString("Indique a designacao da aula para registar o seu término: ", designacao, MAX_STRING);
     pos = procuraAula(designacao, aulasOnline, quantAulas);
 
-    if(pos != -1 && strcmp(aulasOnline[pos].designacao, "D") == 0)
+    if(pos != -1 && strcmp(aulasOnline[pos].estado, "D") == 0)
     {
         printf("Insira a hora de término da aula.\n");
         aulasOnline[pos].horaFim = lerHora();
         strcpy(aulasOnline[pos].estado, "R");
-        printf("Término da aula registada com sucesso!.\n");
+        printf("Término da aula registada com sucesso!\n\n");
     }
     else
     {
