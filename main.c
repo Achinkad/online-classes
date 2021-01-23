@@ -18,7 +18,7 @@ int main()
 {
     tipoUC ucs[MAX_UC];
     tipoAulasOnline *aulasOnline = NULL;
-    int quantUC=0, quantAulas=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, pos, i;
+    int quantUC=0, quantAulas=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
     char opcao, opcaosubMenu, designacao[MAX_STRING];
     setlocale(LC_ALL, "");
 
@@ -35,6 +35,11 @@ int main()
         if(strcmp(aulasOnline[i].estado, "R") == 0)
         {
             quantAulasRealizadas++;
+        }
+
+        if(strcmp(aulasOnline[i].estado, "D") == 0)
+        {
+            quantAulasDecorrer++;
         }
 
         if(strcmp(aulasOnline[i].gravacao, "S") == 0)
@@ -92,11 +97,25 @@ int main()
                     break;
 
                 case 'C':
-                    printf("Registar início de uma aula\n\n");
+                    if(quantAulas > 0 && quantAulasAgendadas > 0)
+                    {
+                        iniciarAula(aulasOnline, quantAulas);
+                    }
+                    else
+                    {
+                        printf("Não existem aulas agendadas para registar o seu início.\n\n");
+                    }
                     break;
 
                 case 'D':
-                    printf("Registar o fim de uma aula\n\n");
+                    if(quantAulas > 0 && quantAulasDecorrer > 0)
+                    {
+                        finalizarAula(aulasOnline, quantAulas);
+                    }
+                    else
+                    {
+                        printf("Não existem aulas a decorrer para dar o seu término.\n\n");
+                    }
                     break;
 
                 case 'E':

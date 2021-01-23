@@ -13,5 +13,7 @@ void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas);
 void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAgendadas, tipoUC ucs[MAX_UC], int quantUC);
 char menuEditarAula(tipoAulasOnline aula);
 tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas);
+void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas);
+void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas);
 
 #endif // FUNCOES_AULASONLINE_H_INCLUDED

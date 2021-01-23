@@ -481,3 +481,67 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
     return aulasOnline;
 }
 
+void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas)
+{
+    int pos, i;
+    char designacao[MAX_STRING];
+    char opcoesGravacao[2][MAX_STRING] = {"S","N"};
+
+    lerString("Indique a designacao da aula a registar inicio: ", designacao, MAX_STRING);
+    pos = procuraAula(designacao, aulasOnline, quantAulas);
+
+    printf("TESTESTSETSTTETSTETST: %d, %s\n\n\n", pos, aulasOnline[pos].estado);
+
+    if(pos != -1 && strcmp(aulasOnline[pos].designacao, "A") == 0)
+    {
+        printf("Insira a hora de início da aula.\n");
+        aulasOnline[pos].horaInicio = lerHora();
+        lerOpcao("Pretende gravar a aula? (S)im / (N)ão: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
+        strcpy(aulasOnline[pos].estado, "D");
+        printf("Início de aula registada com sucesso!.\n");
+    }
+    else
+    {
+        printf("A designação da aula que colocou não existe para dar início a mesma.\nOpções possíveis:\n");
+        for(i=0; i<quantAulas; i++)
+        {
+            if(strcmp(aulasOnline[i].estado, "A") == 0)
+            {
+                printf("-> %s\n", aulasOnline[i].designacao);
+            }
+        }
+        printf("\n");
+    }
+}
+
+void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas)
+{
+    int pos, i;
+    char designacao[MAX_STRING];
+
+    lerString("Indique a designacao da aula para registar o seu término: ", designacao, MAX_STRING);
+    pos = procuraAula(designacao, aulasOnline, quantAulas);
+
+    if(pos != -1 && strcmp(aulasOnline[pos].designacao, "D") == 0)
+    {
+        printf("Insira a hora de término da aula.\n");
+        aulasOnline[pos].horaFim = lerHora();
+        strcpy(aulasOnline[pos].estado, "R");
+        printf("Término da aula registada com sucesso!.\n");
+    }
+    else
+    {
+        printf("A designação da aula que colocou não existe para dar o seu término.\nOpções possíveis:\n");
+        for(i=0; i<quantAulas; i++)
+        {
+            if(strcmp(aulasOnline[i].estado, "D") == 0)
+            {
+                printf("-> %s\n", aulasOnline[i].designacao);
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+
