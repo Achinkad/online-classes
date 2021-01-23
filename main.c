@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include <string.h>
 #include <locale.h>
 
 #include "funcoes_auxiliares.h"
@@ -9,24 +10,37 @@
 #include "funcoes_uc.h"
 #include "funcoes_aulasOnline.h"
 
-char menu(int quantUC, int quantAulas);
+char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas);
 char menuGestaoFicheiro();
-char menuAulas();
+char menuAulas(int quantAulas);
 
 int main()
 {
     tipoUC ucs[MAX_UC];
     tipoAulasOnline *aulasOnline = NULL;
-    int quantUC=0, quantAulas=0, pos;
+    int quantUC=0, quantAulas=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, pos, i;
     char opcao, opcaosubMenu, designacao[MAX_STRING];
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
     aulasOnline=leFichBinAulasOnline(aulasOnline, &quantAulas);
 
+    for(i=0; i<quantAulas; i++)
+    {
+        if(strcmp(aulasOnline[i].estado, "A") == 0)
+        {
+            quantAulasAgendadas++;
+        }
+
+        if(strcmp(aulasOnline[i].estado, "R") == 0)
+        {
+            quantAulasRealizadas++;
+        }
+    }
+
     do
     {
-        opcao = menu(quantUC, quantAulas);
+        opcao = menu(quantUC, quantAulasAgendadas, quantAulasRealizadas, quantAulasGravadas);
         switch(opcao)
         {
         case 'A':
@@ -37,7 +51,7 @@ int main()
             printf("\n\n");
             do
             {
-                opcaosubMenu = menuAulas();
+                opcaosubMenu = menuAulas(quantAulas);
                 switch(opcaosubMenu)
                 {
                 case 'A':
@@ -45,7 +59,14 @@ int main()
                     break;
 
                 case 'B':
-                    editarAula(aulasOnline, quantAulas, ucs, quantUC);
+                    if(quantAulasAgendadas > 0)
+                    {
+                        editarAula(aulasOnline, quantAulas, quantAulasAgendadas, ucs, quantUC);
+                    }
+                    else
+                    {
+                        printf("Não existem aulas agendadas registadas no sistema para edição.\n\n");
+                    }
                     break;
 
                 case 'C':
@@ -118,12 +139,12 @@ int main()
 }
 
 // Apresentação da estrutura do menu geral
-char menu(int quantUC, int quantAulas)
+char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas)
 {
     char opcao;
     printf("------------------ Menu Principal ------------------\n\n");
-    printf("Unidade Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulas);
-    printf("Aulas realizadas: 21\t\tAulas gravadas: 3\n\n");
+    printf("Unidades Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulasAgendadas);
+    printf("Aulas realizadas: %d\t\tAulas gravadas: %d\n\n", quantAulasRealizadas, quantAulasGravadas);
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
     printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n");
     printf("\tS - Sair\n");
@@ -135,10 +156,11 @@ char menu(int quantUC, int quantAulas)
 }
 
 // Apresentação da estrutura do menu das aulas online
-char menuAulas()
+char menuAulas(int quantAulas)
 {
     char opcao;
     printf("------------------ Aulas Online ------------------\n\n");
+    printf("Quantidade de aulas registadas: %d\n\n", quantAulas);
     printf("\tA - Agendar aula online\n\tB - Alterar aula agendada\n\tC - Registar inicio de uma aula\n");
     printf("\tD - Registar o fim de uma aula\n\tE - Listar dados das aula online\n");
     printf("\tS - Sair\n");

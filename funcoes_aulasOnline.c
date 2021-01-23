@@ -321,7 +321,7 @@ char menuEditarAula(tipoAulasOnline aula)
     return op;
 }
 
-void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[MAX_UC], int quantUC)
+void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAgendadas, tipoUC ucs[MAX_UC], int quantUC)
 {
     char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
     char opcoesEstado[3][MAX_STRING] = {"A","D","R"};
@@ -376,11 +376,8 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[MAX_UC
                 printf("Estado de aula editado com sucesso!\n");
                 break;
             case 'E':
-                if(strcmp(aulasOnline[pos].estado, "R") != 0)
-                {
-                    lerOpcao("Indique o novo estado de gravacao.\n\tS - Sim \n\tN - Nao\nOpcao: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
-                    printf("Estado de gravacao da aula editado com sucesso!\n");
-                }
+                lerOpcao("Indique o novo estado de gravacao.\n\tS - Sim \n\tN - Nao\nOpcao: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
+                printf("Estado de gravacao da aula editado com sucesso!\n");
                 break;
             case 'F':
                 aulasOnline[pos].data = lerData();
@@ -411,10 +408,13 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[MAX_UC
     }
     else
     {
-        printf("Designacao de aula inexistente. Há %d opcoes possiveis:", quantAulas);
+        printf("Designacao de aula inexistente. Há %d opcoes possiveis:", quantAulasAgendadas);
         for(i=0; i<quantAulas; i++)
         {
-            printf("\n- %s", aulasOnline[i].designacao);
+            if(strcmp(aulasOnline[i].estado, "A") == 0)
+            {
+                printf("\n- %s", aulasOnline[i].designacao);
+            }
         }
         printf("\n\n");
     }
