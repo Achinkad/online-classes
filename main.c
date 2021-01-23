@@ -36,6 +36,11 @@ int main()
         {
             quantAulasRealizadas++;
         }
+
+        if(strcmp(aulasOnline[i].gravacao, "S") == 0)
+        {
+            quantAulasGravadas++;
+        }
     }
 
     do
@@ -55,13 +60,30 @@ int main()
                 switch(opcaosubMenu)
                 {
                 case 'A':
-                    aulasOnline = agendaAula(aulasOnline, &quantAulas, ucs, quantUC);
+                    aulasOnline = agendaAula(aulasOnline, &quantAulas,  ucs, quantUC);
                     break;
 
                 case 'B':
                     if(quantAulasAgendadas > 0)
                     {
-                        editarAula(aulasOnline, quantAulas, quantAulasAgendadas, ucs, quantUC);
+                        printf("Pretende (A)lterar ou (E)liminar uma aula: ");
+                        scanf("%c", &opcaosubMenu);
+                        limpaBufferStdin();
+                        opcaosubMenu = toupper(opcaosubMenu);
+                        switch(opcaosubMenu)
+                        {
+                            case 'A':
+                                editarAula(aulasOnline, quantAulas, quantAulasAgendadas, ucs, quantUC);
+                            break;
+
+                            case 'E':
+                                eliminaAula(aulasOnline, &quantAulas);
+                            break;
+
+                            default:
+                            printf("Opção inválida!\n\n");
+                            break;
+                        }
                     }
                     else
                     {
@@ -161,7 +183,7 @@ char menuAulas(int quantAulas)
     char opcao;
     printf("------------------ Aulas Online ------------------\n\n");
     printf("Quantidade de aulas registadas: %d\n\n", quantAulas);
-    printf("\tA - Agendar aula online\n\tB - Alterar aula agendada\n\tC - Registar inicio de uma aula\n");
+    printf("\tA - Agendar aula online\n\tB - Alterar/Eliminar aula agendada\n\tC - Registar inicio de uma aula\n");
     printf("\tD - Registar o fim de uma aula\n\tE - Listar dados das aula online\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");

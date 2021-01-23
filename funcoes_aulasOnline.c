@@ -408,14 +408,76 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAge
     }
     else
     {
-        printf("Designacao de aula inexistente. Há %d opcoes possiveis:", quantAulasAgendadas);
+        printf("A designação da aula que colocou não existe.\nOpções possíveis:\n");
         for(i=0; i<quantAulas; i++)
         {
             if(strcmp(aulasOnline[i].estado, "A") == 0)
             {
-                printf("\n- %s", aulasOnline[i].designacao);
+                printf("-> %s\n", aulasOnline[i].designacao);
             }
         }
-        printf("\n\n");
+        printf("\n");
     }
 }
+
+tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
+{
+    tipoAulasOnline *pAulasOnline;
+    char designacao[MAX_STRING], verificao;
+    int i, pos, pQuantAulas;
+
+    pAulasOnline = aulasOnline;
+
+    lerString("Indique a designação da aula que pretende eliminar: ", designacao, MAX_STRING);
+    pos = procuraAula(designacao, pAulasOnline, *quantAulas);
+
+    if(pos != -1)
+    {
+        printf("Pretende mesmo eliminar a aula ""%c""? (S)im / (N)ão: ", aulasOnline[pos].designacao);
+        scanf("%s", &verificao);
+        limpaBufferStdin();
+        verificao = toupper(verificao);
+
+        switch(verificao)
+        {
+        case 'S':
+            for(i=pos; i < *quantAulas-1; i++)
+            {
+                aulasOnline[i] = aulasOnline[i+1];
+            }
+            aulasOnline = realloc(aulasOnline, (*quantAulas-1)*sizeof(tipoAulasOnline));
+
+            if(aulasOnline == NULL && (*quantAulas-1) != 0)
+            {
+                printf("Erro na alocação de memória!\n\n");
+                aulasOnline = pAulasOnline;
+            }
+            (*quantAulas)--;
+            break;
+
+        case 'N':
+            printf("\n\n");
+            break;
+
+        default:
+            printf("Opção inválida!\n\n");
+            break;
+        }
+    }
+    else
+    {
+        pQuantAulas = *quantAulas;
+        printf("A designação da aula que colocou não existe.\nOpções possíveis:\n");
+        for(i=0; i<pQuantAulas; i++)
+        {
+            if(strcmp(aulasOnline[i].estado, "A") == 0)
+            {
+                printf("-> %s\n", aulasOnline[i].designacao);
+            }
+        }
+        printf("\n");
+    }
+
+    return aulasOnline;
+}
+
