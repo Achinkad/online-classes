@@ -8,21 +8,25 @@
 #include "funcoes_tipoAula.h"
 #include "funcoes_uc.h"
 #include "funcoes_aulasOnline.h"
+#include "funcoes_acessos.h"
 
 char menu(int quantUC, int quantAulas);
 char menuGestaoFicheiro();
 char menuAulas();
+char menuGestaoAcessos();
 
 int main()
 {
     tipoUC ucs[MAX_UC];
     tipoAulasOnline *aulasOnline = NULL;
-    int quantUC=0, quantAulas=0;
+    tipoAcesso *acessos = NULL;
+    int quantUC=0, quantAulas=0, quantAcessos=0;
     char opcao, opcaosubMenu;
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
     aulasOnline=leFichBinAulasOnline(aulasOnline, &quantAulas);
+    acessos=leFichBinAcessos(acessos, &quantAcessos);
 
     do
     {
@@ -78,6 +82,7 @@ int main()
                 case 'E':
                     escreveFichBinUCs(ucs,quantUC);
                     escreveFichBinAulasOnline(aulasOnline, quantAulas);
+                    escreveFichBinAcessos(acessos, quantAcessos);
                     break;
                 case 'L':
                     leFichBinUCs(ucs,&quantUC);
@@ -100,7 +105,22 @@ int main()
             break;
 
         case 'E':
-            printf("Gestao de Acesso as Aulas Online\n\n");
+            do
+            {
+                opcaosubMenu = menuGestaoAcessos();
+                switch(opcaosubMenu)
+                {
+                case 'A':
+                    acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, &quantAulas);
+                    break;
+                case 'S':
+                    break;
+                default:
+                    printf("\nOpcao Invalida!\n");
+                    break;
+                }
+            }
+            while(opcaosubMenu!='S');
             break;
 
         case 'S':
@@ -134,7 +154,7 @@ char menu(int quantUC, int quantAulas)
     return opcao;
 }
 
-// Apresentação da estrutura do menu das aulas online
+// Apresentação da estrutura do submenu das aulas online
 char menuAulas()
 {
     char opcao;
@@ -149,7 +169,7 @@ char menuAulas()
     return opcao;
 }
 
-// Apresentação da estrutura do submenu C
+// Apresentação da estrutura do submenu dos Ficheiros
 char menuGestaoFicheiro()
 {
     char opcao;
@@ -157,6 +177,20 @@ char menuGestaoFicheiro()
     printf("\tE - Escrever Ficheiros\n");
     printf("\tL - Ler Ficheiro\n");
     printf("\tR - Reiniciar dados da Aplicacao\n");
+    printf("\tS - Sair\n");
+    printf("\nInsira uma opcao: ");
+    scanf("%c", &opcao);
+    limpaBufferStdin();
+    opcao = toupper(opcao);
+    return opcao;
+}
+
+// Apresentação da estrutura do submenu da gestao de acessos
+char menuGestaoAcessos()
+{
+    char opcao;
+    printf("\n\n------------------ Gestao de Acessos ------------------\n\n");
+    printf("\tA - Registar Acessos de Estudante\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
     scanf("%c", &opcao);

@@ -44,4 +44,11 @@ typedef struct{
     char gravacao[2];
 }tipoAulasOnline;
 
+//Declaração dos Acessos
+typedef struct{
+    int numEstudante;
+    char desigacaoAula[MAX_STRING];
+    char tipoAcesso[4];
+}tipoAcesso;
+
 #endif // CONSTANTES_H_INCLUDED
