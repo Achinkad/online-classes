@@ -7,7 +7,7 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
 tipoAulasOnline lerDadosAulas();
 void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas);
 void mostraAulas(tipoAulasOnline aulasOnline);
-int procuraAula(char designacao, tipoAulasOnline aulasOnline[], int quantAulas);
+int procuraAula(char designacao[], tipoAulasOnline aulasOnline[], int quantAulas);
 tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantAulas);
 void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas);
 void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAgendadas, tipoUC ucs[MAX_UC], int quantUC);

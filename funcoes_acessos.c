@@ -5,11 +5,13 @@
 
 #include "constantes.h"
 #include "funcoes_auxiliares.h"
+#include "funcoes_aulasOnline.h"
 
 tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnline aulasOnline[], int *quantAulas, int quantAulasADecorrer, int quantAulasGravadas){
     int i, pos;
     tipoAcesso acesso;
     tipoAcesso *pAcessos=acessos;
+    char designacao[MAX_STRING];
     FILE *f;
     acesso.numEstudante=lerInteiro("Indique o número de Estudante:",1,10000);
     //mostrar as aulas a decorrer no momento
@@ -43,8 +45,8 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
     if(quantAulasGravadas!=0||quantAulasADecorrer!=0){
         //pedir designação da aula
         do{
-            lerString("\n\nIndique a aula que deseja assistir (a decorrer ou gravada) através da sua designacao:", &(acesso.desigacaoAula), MAX_STRING);
-            pos=procuraAula(acesso.desigacaoAula,aulasOnline,*quantAulas);
+            lerString("\n\nIndique a aula que deseja assistir (a decorrer ou gravada) através da sua designacao:", designacao, MAX_STRING);
+            pos=procuraAula(designacao, aulasOnline, *quantAulas);
             if(pos==-1){
                 printf("\n\nAula nao encontrada!");
             }
@@ -78,7 +80,7 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
                     fclose(f);
                 }
 
-                printf("\n\nRegisto de acesso adicionado com sucesso!!");
+                printf("\nRegisto de acesso adicionado com sucesso!!");
             }
         }
     }
