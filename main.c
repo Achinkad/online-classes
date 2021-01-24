@@ -23,7 +23,7 @@ int main()
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
-    aulasOnline=leFichBinAulasOnline(aulasOnline, &quantAulas);
+    aulasOnline = leFichBinAulasOnline(aulasOnline, &quantAulas);
 
     for(i=0; i<quantAulas; i++)
     {
@@ -99,7 +99,7 @@ int main()
                 case 'C':
                     if(quantAulas > 0 && quantAulasAgendadas > 0)
                     {
-                        iniciarAula(aulasOnline, quantAulas);
+                        iniciarAula(aulasOnline, quantAulas, &quantAulasDecorrer, &quantAulasAgendadas);
                     }
                     else
                     {
@@ -108,9 +108,9 @@ int main()
                     break;
 
                 case 'D':
-                    if(quantAulas > 0)
+                    if(quantAulas > 0 && quantAulasDecorrer > 0)
                     {
-                        finalizarAula(aulasOnline, quantAulas);
+                        finalizarAula(aulasOnline, quantAulas, &quantAulasDecorrer, &quantAulasRealizadas, &quantAulasGravadas);
                     }
                     else
                     {

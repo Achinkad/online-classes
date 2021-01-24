@@ -190,24 +190,24 @@ tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantA
 {
     FILE *f;
     tipoAulasOnline *pAulasOnline;
-    f=fopen("dadosAulasOnline.dat", "rb");
-    if(f==NULL)
+    f = fopen("dadosAulasOnline.dat", "rb");
+    if(f == NULL)
     {
-        printf("\n\nNao foi possivel encontrar o ficheiro de Dados das Aulas Online!\n\n");
+        printf("\n\nNão foi possível encontrar o ficheiro de dados das aulas online.\n\n");
     }
     else
     {
-        fread(&(*quantAulas),sizeof(int),1,f);
+        fread(&(*quantAulas), sizeof(int), 1, f);
         pAulasOnline = aulasOnline;
-        aulasOnline = realloc(aulasOnline,(*quantAulas)*sizeof(tipoAulasOnline));
+        aulasOnline = realloc(aulasOnline, (*quantAulas)*sizeof(tipoAulasOnline));
         if(aulasOnline == NULL && *quantAulas != 0)
         {
-            printf("\nErro! (erro ao reservar a memória)");
-            aulasOnline=pAulasOnline;
+            printf("\nErro ao reservar a memória!\n\n");
+            aulasOnline = pAulasOnline;
         }
         else
         {
-            fread(aulasOnline,sizeof(tipoAulasOnline),*quantAulas,f);
+            fread(aulasOnline, sizeof(tipoAulasOnline), *quantAulas, f);
         }
         fclose(f);
     }
@@ -217,15 +217,15 @@ tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantA
 void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas)
 {
     FILE *f;
-    f=fopen("dadosAulasOnline.dat", "wb");
-    if(f==NULL)
+    f = fopen("dadosAulasOnline.dat", "wb");
+    if(f == NULL)
     {
-        printf("\n\nNao foi possivel encontrar o ficheiro de Dados das Aulas Online!\n\n");
+        printf("\n\nNão foi possível encontrar o ficheiro de dados das aulas online.\n\n");
     }
     else
     {
-        fwrite(&quantAulas,sizeof(int),1,f);
-        fwrite(aulasOnline,sizeof(tipoAulasOnline),quantAulas,f);
+        fwrite(&quantAulas, sizeof(int), 1, f);
+        fwrite(aulasOnline, sizeof(tipoAulasOnline), quantAulas, f);
         fclose(f);
     }
 }
@@ -433,7 +433,7 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
 
     if(pos != -1)
     {
-        printf("Pretende mesmo eliminar a aula ""%c""? (S)im / (N)ão: ", aulasOnline[pos].designacao);
+        printf("Pretende mesmo eliminar a aula \"%s\"? (S)im / (N)ão: ", aulasOnline[pos].designacao);
         scanf("%s", &verificao);
         limpaBufferStdin();
         verificao = toupper(verificao);
@@ -456,7 +456,7 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
             break;
 
         case 'N':
-            printf("\n\n");
+            printf("O sistema avisa que a aula não foi eliminada.\n\n");
             break;
 
         default:
@@ -477,11 +477,10 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
         }
         printf("\n");
     }
-
     return aulasOnline;
 }
 
-void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas)
+void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, int *quantAulasDecorrer, int *quantAulasAgendadas)
 {
     int pos, i;
     char designacao[MAX_STRING];
@@ -497,6 +496,8 @@ void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas)
         lerOpcao("Pretende gravar a aula? (S)im/(N)ão: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
         strcpy(aulasOnline[pos].estado, "D");
         printf("Início de aula registada com sucesso!\n\n");
+        (*quantAulasDecorrer)++;
+        (*quantAulasAgendadas)--;
     }
     else
     {
@@ -512,7 +513,7 @@ void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas)
     }
 }
 
-void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas)
+void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, int *quantAulasDecorrer, int *quantAulasRealizadas, int *quantAulasGravadas)
 {
     int pos, i;
     char designacao[MAX_STRING];
@@ -526,6 +527,14 @@ void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas)
         aulasOnline[pos].horaFim = lerHora();
         strcpy(aulasOnline[pos].estado, "R");
         printf("Término da aula registada com sucesso!\n\n");
+
+        if(strcmp(aulasOnline[pos].gravacao, "S") == 0)
+        {
+            (*quantAulasGravadas)++;
+        }
+
+        (*quantAulasDecorrer)--;
+        (*quantAulasRealizadas)++;
     }
     else
     {
@@ -540,6 +549,3 @@ void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas)
         printf("\n");
     }
 }
-
-
-

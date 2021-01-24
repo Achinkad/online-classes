@@ -5,10 +5,12 @@
 #define MAX_UC 40
 #define MAX_UC_CODIGO 20
 
+//Declaração do Tipo de Data
 typedef struct{
     int dia, mes, ano;
 }tipoData;
 
+//Declaração do Tipo de Hora
 typedef struct{
     int hora, minuto, segundo;
 }tipoHora;
