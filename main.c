@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include <string.h>
 #include <locale.h>
 
 #include "funcoes_auxiliares.h"
@@ -10,9 +11,9 @@
 #include "funcoes_aulasOnline.h"
 #include "funcoes_acessos.h"
 
-char menu(int quantUC, int quantAulas);
+char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas);
 char menuGestaoFicheiro();
-char menuAulas();
+char menuAulas(int quantAulas);
 char menuGestaoAcessos();
 
 int main()
@@ -20,17 +21,40 @@ int main()
     tipoUC ucs[MAX_UC];
     tipoAulasOnline *aulasOnline = NULL;
     tipoAcesso *acessos = NULL;
-    int quantUC=0, quantAulas=0, quantAcessos=0;
-    char opcao, opcaosubMenu;
+    int quantUC=0, quantAulas=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
+    char opcao, opcaosubMenu, designacao[MAX_STRING];
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
-    aulasOnline=leFichBinAulasOnline(aulasOnline, &quantAulas);
+    aulasOnline = leFichBinAulasOnline(aulasOnline, &quantAulas);
     acessos=leFichBinAcessos(acessos, &quantAcessos);
+
+    for(i=0; i<quantAulas; i++)
+    {
+        if(strcmp(aulasOnline[i].estado, "A") == 0)
+        {
+            quantAulasAgendadas++;
+        }
+
+        if(strcmp(aulasOnline[i].estado, "R") == 0)
+        {
+            quantAulasRealizadas++;
+        }
+
+        if(strcmp(aulasOnline[i].estado, "D") == 0)
+        {
+            quantAulasDecorrer++;
+        }
+
+        if(strcmp(aulasOnline[i].gravacao, "S") == 0)
+        {
+            quantAulasGravadas++;
+        }
+    }
 
     do
     {
-        opcao = menu(quantUC, quantAulas);
+        opcao = menu(quantUC, quantAulasAgendadas, quantAulasRealizadas, quantAulasGravadas);
         switch(opcao)
         {
         case 'A':
@@ -41,23 +65,61 @@ int main()
             printf("\n\n");
             do
             {
-                opcaosubMenu = menuAulas();
+                opcaosubMenu = menuAulas(quantAulas);
                 switch(opcaosubMenu)
                 {
                 case 'A':
-                    aulasOnline = agendaAula(aulasOnline, &quantAulas);
+                    aulasOnline = agendaAula(aulasOnline, &quantAulas,  ucs, quantUC);
                     break;
 
                 case 'B':
-                    printf("Alterar aula agendada\n\n");
+                    if(quantAulasAgendadas > 0)
+                    {
+                        printf("Pretende (A)lterar ou (E)liminar uma aula: ");
+                        scanf("%c", &opcaosubMenu);
+                        limpaBufferStdin();
+                        opcaosubMenu = toupper(opcaosubMenu);
+                        switch(opcaosubMenu)
+                        {
+                            case 'A':
+                                editarAula(aulasOnline, quantAulas, quantAulasAgendadas, ucs, quantUC);
+                            break;
+
+                            case 'E':
+                                eliminaAula(aulasOnline, &quantAulas);
+                            break;
+
+                            default:
+                            printf("Opção inválida!\n\n");
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        printf("Não existem aulas agendadas registadas no sistema para edição.\n\n");
+                    }
                     break;
 
                 case 'C':
-                    printf("Registar início de uma aula\n\n");
+                    if(quantAulas > 0 && quantAulasAgendadas > 0)
+                    {
+                        iniciarAula(aulasOnline, quantAulas, &quantAulasDecorrer, &quantAulasAgendadas);
+                    }
+                    else
+                    {
+                        printf("Não existem aulas agendadas para registar o seu início.\n\n");
+                    }
                     break;
 
                 case 'D':
-                    printf("Registar o fim de uma aula\n\n");
+                    if(quantAulas > 0 && quantAulasDecorrer > 0)
+                    {
+                        finalizarAula(aulasOnline, quantAulas, &quantAulasDecorrer, &quantAulasRealizadas, &quantAulasGravadas);
+                    }
+                    else
+                    {
+                        printf("Não existem aulas a decorrer para dar o seu término.\n\n");
+                    }
                     break;
 
                 case 'E':
@@ -138,12 +200,12 @@ int main()
 }
 
 // Apresentação da estrutura do menu geral
-char menu(int quantUC, int quantAulas)
+char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas)
 {
     char opcao;
     printf("------------------ Menu Principal ------------------\n\n");
-    printf("Unidade Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulas);
-    printf("Aulas realizadas: 21\t\tAulas gravadas: 3\n\n");
+    printf("Unidades Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulasAgendadas);
+    printf("Aulas realizadas: %d\t\tAulas gravadas: %d\n\n", quantAulasRealizadas, quantAulasGravadas);
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
     printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n");
     printf("\tS - Sair\n");
@@ -155,11 +217,12 @@ char menu(int quantUC, int quantAulas)
 }
 
 // Apresentação da estrutura do submenu das aulas online
-char menuAulas()
+char menuAulas(int quantAulas)
 {
     char opcao;
     printf("------------------ Aulas Online ------------------\n\n");
-    printf("\tA - Agendar aula online\n\tB - Alterar aula agendada\n\tC - Registar inicio de uma aula\n");
+    printf("Quantidade de aulas registadas: %d\n\n", quantAulas);
+    printf("\tA - Agendar aula online\n\tB - Alterar/Eliminar aula agendada\n\tC - Registar inicio de uma aula\n");
     printf("\tD - Registar o fim de uma aula\n\tE - Listar dados das aula online\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
