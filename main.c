@@ -21,7 +21,7 @@ int main()
     tipoUC ucs[MAX_UC];
     tipoAulasOnline *aulasOnline = NULL;
     tipoAcesso *acessos = NULL;
-    int quantUC=0, quantAulas=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
+    int quantUC=0, quantAulas=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
     char opcao, opcaosubMenu, designacao[MAX_STRING];
     setlocale(LC_ALL, "");
 
@@ -46,7 +46,7 @@ int main()
             quantAulasDecorrer++;
         }
 
-        if(strcmp(aulasOnline[i].gravacao, "S") == 0)
+        if(strcmp(aulasOnline[i].gravacao, "S") == 0 && strcmp(aulasOnline[i].estado, "R") == 0)
         {
             quantAulasGravadas++;
         }
@@ -173,7 +173,7 @@ int main()
                 switch(opcaosubMenu)
                 {
                 case 'A':
-                    acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, &quantAulas);
+                    acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, &quantAulas, quantAulasDecorrer, quantAulasGravadas);
                     break;
                 case 'S':
                     break;
