@@ -75,7 +75,7 @@ void mostraAulas(tipoAulasOnline aulasOnline)
     if(strcmp(aulasOnline.estado, "R")==0){
         printf("\n\tEstudantes Presentes: %d", aulasOnline.contEstudantesPresentes);
         if(strcmp(aulasOnline.gravacao, "S")==0){
-            printf("\n\tAcessos a Gravacao: %d", aulasOnline.contEstudantesPresentes);
+            printf("\n\tAcessos a Gravacao: %d", aulasOnline.contAcessosGravacoes);
         }
     }
 }
@@ -162,6 +162,8 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
                 aulasOnline[*quantAulas].horaFim.hora = -1;
                 aulasOnline[*quantAulas].horaFim.minuto = -1;
                 aulasOnline[*quantAulas].horaFim.segundo = -1;
+                aulasOnline[*quantAulas].contAcessosGravacoes = 0;
+                aulasOnline[*quantAulas].contEstudantesPresentes = 0;
 
                 if(strcmp(dados.tipo, "T") == 0)
                 {
@@ -397,7 +399,7 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAge
     }
 }
 
-tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[], int quantUC)
+tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[], int quantUC, int *quantAulasAgendadas)
 {
     tipoAulasOnline *pAulasOnline;
     char designacao[MAX_STRING], verificao;
@@ -444,6 +446,7 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tip
                 (ucs[posUC].aulasPL.contAgendadas)--;
             }
             (*quantAulas)--;
+            (*quantAulasAgendadas)--;
             break;
 
         case 'N':
