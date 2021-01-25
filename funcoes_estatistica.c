@@ -36,3 +36,34 @@ int obterPercentagemUcsGravadas(tipoUC ucs[], int quantUC, tipoAulasOnline aulas
 
     return resultado;
 }
+
+
+void rankingUcs(tipoUC ucs[], int quantUC, tipoAulasOnline aulasOnline[], int quantAulas)
+{
+    int i, j, posmenor;
+    tipoUC aux;
+
+    for(i=0; i < quantUC-1; i++)
+    {
+        posmenor = i;
+        for(j=i+1; j < quantUC; j++)
+        {
+            if((ucs[j].aulasPL.contGravadas + ucs[j].aulasT.contGravadas + ucs[j].aulasTP.contGravadas) > (ucs[posmenor].aulasPL.contGravadas + ucs[posmenor].aulasT.contGravadas + ucs[posmenor].aulasTP.contGravadas))
+            {
+                posmenor = j;
+            }
+        }
+
+        if(posmenor != i)
+        {
+            aux = ucs[posmenor];
+            ucs[posmenor] = ucs[i];
+            ucs[i] = aux;
+        }
+    }
+
+    for(i=0; i < quantUC; i++)
+    {
+        printf("Designação da UC: %s\n", aux.designacao);
+    }
+}
