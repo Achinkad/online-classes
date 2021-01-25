@@ -37,7 +37,6 @@ int obterTotalDecorrer(tipoUC uc){
 }
 int obterAulasRestantes(tipoAula tipoAula){
     int restantes;
-    printf("---%d----", tipoAula.aDecorrer);
     restantes=tipoAula.quantAulas-(tipoAula.contAgendadas+tipoAula.aDecorrer+tipoAula.contRealizadas);
     return restantes;
 }
