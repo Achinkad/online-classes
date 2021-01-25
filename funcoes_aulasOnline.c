@@ -23,7 +23,7 @@ void mostraAulas(tipoAulasOnline aulasOnline)
     {
         printf("\nTipo de aula: Teorica-Pratica");
     }
-    else
+    else if(strcmp(aulasOnline.tipo, "PL") == 0)
     {
         printf("\nTipo de aula: Pratica");
     }
@@ -204,6 +204,7 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
         else
         {
             lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpção: ", opcoesTipo, 3, tipo);
+            printf("-----%s----", tipo);
             verificaTipoAula(ucs[posUC], &verificaTipo, tipo);
 
             if(verificaTipo == 1)
@@ -237,6 +238,7 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
                         strcpy(aulasOnline[*quantAulas].codigoUC, codigoUC);
                         strcpy(aulasOnline[*quantAulas].estado, "A");
                         strcpy(aulasOnline[*quantAulas].gravacao, "N");
+                        strcpy(aulasOnline[*quantAulas].tipo, tipo);
                         aulasOnline[*quantAulas].horaFim.hora = -1;
                         aulasOnline[*quantAulas].horaFim.minuto = -1;
                         aulasOnline[*quantAulas].horaFim.segundo = -1;
