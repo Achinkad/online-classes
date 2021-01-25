@@ -12,7 +12,7 @@ tipoAulasOnline *leFichBinAulasOnline(tipoAulasOnline aulasOnline[], int *quantA
 void escreveFichBinAulasOnline(tipoAulasOnline aulasOnline[], int quantAulas);
 void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAgendadas, tipoUC ucs[MAX_UC], int quantUC);
 char menuEditarAula(tipoAulasOnline aula);
-tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[], int quantUC);
+tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[], int quantUC, int *quantAulasAgendadas);
 void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasAgendadas);
 void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasRealizadas, int *quantAulasGravadas);
 char verificaTipoAula(tipoUC uc, int *verificaTipo);

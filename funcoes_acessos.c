@@ -52,41 +52,46 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
             }
         }while(pos==-1);
         //verifica se a aula está a decorrer ou se já decorreu e se foi gravada
-        if(strcmp(aulasOnline[pos].estado,"D")!=0&&strcmp(aulasOnline[pos].estado,"R")!=0||strcmp(aulasOnline[pos].gravacao,"S")!=0){
+        if(strcmp(aulasOnline[pos].estado,"D")!=0&&strcmp(aulasOnline[pos].estado,"R")!=0){
             printf("\nEsta aula nao se encontra disponivel!");
         }else{
-            if(strcmp(aulasOnline[pos].estado,"D")==0){
-                strcpy(acesso.tipoAcesso,"ON");
+            if(strcmp(aulasOnline[pos].estado,"R")==0 && strcmp(aulasOnline[pos].gravacao,"N")==0){
+                printf("\nEsta aula nao foi gravada!");
             }else{
-                strcpy(acesso.tipoAcesso,"OFF");
-            }
-            acessos = realloc(acessos,(*quantAcessos+1)*sizeof(tipoAcesso));
-            if(acessos == NULL){
-                printf("\n\nErro! (erro ao reservar a memória)");
-                acessos=pAcessos;
-            }else{
-                acessos[*quantAcessos]=acesso;
-                (*quantAcessos)++;
-
-                if(strcmp(acesso.tipoAcesso,"ON")==0){
-                    (aulasOnline[pos].contEstudantesPresentes)++;
+                if(strcmp(aulasOnline[pos].estado,"D")==0){
+                    strcpy(acesso.tipoAcesso,"ON");
                 }else{
-                    (aulasOnline[pos].contAcessosGravacoes)++;
+                    strcpy(acesso.tipoAcesso,"OFF");
                 }
-
-                f = fopen("log_acessos.txt", "a");
-                if(f==NULL){
-                    printf("\n\nImpossivel aceder ao ficheiro de logs");
+                strcpy(acesso.desigacaoAula, designacao);
+                acessos = realloc(acessos,(*quantAcessos+1)*sizeof(tipoAcesso));
+                if(acessos == NULL){
+                    printf("\n\nErro! (erro ao reservar a memória)");
+                    acessos=pAcessos;
                 }else{
+                    acessos[*quantAcessos]=acesso;
+                    (*quantAcessos)++;
+
                     if(strcmp(acesso.tipoAcesso,"ON")==0){
-                        fprintf(f, "Estudante %d - Aula %s (Online)\n", acesso.numEstudante, acesso.desigacaoAula);
+                        (aulasOnline[pos].contEstudantesPresentes)++;
                     }else{
-                        fprintf(f, "Estudante %d - Aula %s (Offline)\n", acesso.numEstudante, acesso.desigacaoAula);
+                        (aulasOnline[pos].contAcessosGravacoes)++;
                     }
-                    fclose(f);
-                }
 
-                printf("\nRegisto de acesso adicionado com sucesso!!");
+                    f = fopen("log_acessos.txt", "a");
+                    if(f==NULL){
+                        printf("\n\nImpossivel aceder ao ficheiro de logs");
+                    }else{
+                        if(strcmp(acesso.tipoAcesso,"ON")==0){
+                            fprintf(f, "Estudante %d - Aula %s (Online)\n", acesso.numEstudante, acesso.desigacaoAula);
+                        }else{
+                            fprintf(f, "Estudante %d - Aula %s (Offline)\n", acesso.numEstudante, acesso.desigacaoAula);
+                        }
+                        fclose(f);
+                    }
+
+                    printf("\nRegisto de acesso adicionado com sucesso!!");
+                }
             }
         }
     }

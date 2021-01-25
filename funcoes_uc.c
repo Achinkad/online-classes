@@ -23,9 +23,9 @@ int obterTotalRealizado(tipoUC uc){
 }
 int obterTotalGravadas(tipoUC uc){
     int total=0;
-    total+=uc.aulasT.contRealizadas;
-    total+=uc.aulasTP.contRealizadas;
-    total+=uc.aulasPL.contRealizadas;
+    total+=uc.aulasT.contGravadas;
+    total+=uc.aulasTP.contGravadas;
+    total+=uc.aulasPL.contGravadas;
     return total;
 }
 
@@ -101,8 +101,8 @@ void listarUCs(tipoUC ucs[MAX_UC], int quantUCs, tipoAulasOnline aulasOnline[], 
                 printf("\n\tAulas Agendadas:");
                 for(i2=0;i2<quantAulas;i2++){
                     if(strcmp(aulasOnline[i2].codigoUC, ucs[i].codigo)==0&&strcmp(aulasOnline[i2].estado,"A")==0){
-                        printf("\n\t\t%s (%s)", aulasOnline[i2].designacao, aulasOnline[i2].tipo);
-                        printf("\n\t\t%d-%d-%d %d:%d\n", aulasOnline[i2].data.dia, aulasOnline[i2].data.mes, aulasOnline[i2].data.ano, aulasOnline[i2].horaInicio.hora, aulasOnline[i2].horaInicio.minuto);
+                        printf("\n\t\t-%s (%s) - %s -", aulasOnline[i2].designacao, aulasOnline[i2].tipo, aulasOnline[i2].nomeDocente);
+                        printf(" %.2d-%.2d-%.2d %.2d:%.2d", aulasOnline[i2].data.dia, aulasOnline[i2].data.mes, aulasOnline[i2].data.ano, aulasOnline[i2].horaInicio.hora, aulasOnline[i2].horaInicio.minuto);
                     }
                 }
             }

@@ -119,7 +119,7 @@ int main()
                             break;
 
                             case 'E':
-                                eliminaAula(aulasOnline, &quantAulas, ucs, quantUC);
+                                eliminaAula(aulasOnline, &quantAulas, ucs, quantUC, &quantAulasAgendadas);
                             break;
 
                             default:
