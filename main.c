@@ -12,6 +12,7 @@
 #include "funcoes_acessos.h"
 
 char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas);
+char menuUC();
 char menuGestaoFicheiro();
 char menuAulas(int quantAulas);
 char menuGestaoAcessos();
@@ -22,33 +23,23 @@ int main()
     tipoAulasOnline *aulasOnline = NULL;
     tipoAcesso *acessos = NULL;
     int quantUC=0, quantAulas=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
-    char opcao, opcaosubMenu, designacao[MAX_STRING];
+    char opcao, opcaosubMenu, designacao[MAX_STRING], codigo[MAX_STRING];
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
     aulasOnline = leFichBinAulasOnline(aulasOnline, &quantAulas);
     acessos=leFichBinAcessos(acessos, &quantAcessos);
 
-    for(i=0; i<quantAulas; i++)
+    for(i=0; i<quantUC; i++)
     {
-        if(strcmp(aulasOnline[i].estado, "A") == 0)
-        {
-            quantAulasAgendadas++;
-        }
-
-        if(strcmp(aulasOnline[i].estado, "R") == 0)
-        {
-            quantAulasRealizadas++;
-        }
-
+        quantAulasAgendadas+=obterTotalAgendado(ucs[i]);
+        quantAulasRealizadas+=obterTotalRealizado(ucs[i]);
+        quantAulasGravadas+=obterTotalGravadas(ucs[i]);
+    }
+    for(i=0;i<quantAulas;i++){
         if(strcmp(aulasOnline[i].estado, "D") == 0)
         {
             quantAulasDecorrer++;
-        }
-
-        if(strcmp(aulasOnline[i].gravacao, "S") == 0 && strcmp(aulasOnline[i].estado, "R") == 0)
-        {
-            quantAulasGravadas++;
         }
     }
 
@@ -58,7 +49,39 @@ int main()
         switch(opcao)
         {
         case 'A':
-            gestaoUCs(ucs, &quantUC);
+            printf("\n\n");
+            do{
+                opcaosubMenu=menuUC();
+                switch(opcaosubMenu){
+                    case 'I':
+                        if(quantUC<MAX_UC){
+                            do{
+                                lerString("Indique o código da UC: ",codigo,MAX_STRING);
+                                pos=procuraUC(codigo,ucs,quantUC);
+                                if(pos==-1){
+                                    ucs[quantUC]=lerDadosUC();
+                                    strcpy(ucs[quantUC].codigo,codigo);
+                                    quantUC++;
+                                }else{
+                                    printf("Código UC já existe!\n");
+                                }
+                            }while(pos!=-1);
+                        }else{
+                            printf("\n\nNao e possivel adicionar mais ucs (limite de 40 atingido!\n\n");
+                        }
+                    break;
+                    case 'L':
+                        listarUCs(ucs,quantUC, aulasOnline,quantAulas);
+                    break;
+                    case 'E':
+                        editarUC(ucs, &quantUC);
+                    break;
+                    case 'S': break;
+                    default:
+                        printf("Opção Inválida");
+                    break;
+                }
+            }while(opcaosubMenu!='S');
             break;
 
         case 'B':
@@ -86,7 +109,7 @@ int main()
                             break;
 
                             case 'E':
-                                eliminaAula(aulasOnline, &quantAulas);
+                                eliminaAula(aulasOnline, &quantAulas, ucs, quantUC);
                             break;
 
                             default:
@@ -103,7 +126,7 @@ int main()
                 case 'C':
                     if(quantAulas > 0 && quantAulasAgendadas > 0)
                     {
-                        iniciarAula(aulasOnline, quantAulas, &quantAulasDecorrer, &quantAulasAgendadas);
+                        iniciarAula(aulasOnline, quantAulas, ucs, quantUC, &quantAulasDecorrer, &quantAulasAgendadas);
                     }
                     else
                     {
@@ -114,7 +137,7 @@ int main()
                 case 'D':
                     if(quantAulas > 0 && quantAulasDecorrer > 0)
                     {
-                        finalizarAula(aulasOnline, quantAulas, &quantAulasDecorrer, &quantAulasRealizadas, &quantAulasGravadas);
+                        finalizarAula(aulasOnline, quantAulas, ucs, quantUC, &quantAulasDecorrer, &quantAulasRealizadas, &quantAulasGravadas);
                     }
                     else
                     {
@@ -214,6 +237,21 @@ char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int qu
     limpaBufferStdin();
     opcao = toupper(opcao);
     return opcao;
+}
+
+// Apresentação da estrutura do submenu das UCs
+char menuUC(){
+    char op;
+    printf("\n\n--------- GESTAO DE UC'S ---------\n\n");
+    printf("\tI - Inserir nova UC\n");
+    printf("\tL - Listar UC's\n");
+    printf("\tE - Editar UC\n");
+    printf("\tS - Sair\n\n");
+    printf("Insira uma opção: ");
+    scanf("%c", &op);
+    limpaBufferStdin();
+    op=toupper(op);
+    return op;
 }
 
 // Apresentação da estrutura do submenu das aulas online

@@ -68,6 +68,12 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
                 acessos[*quantAcessos]=acesso;
                 (*quantAcessos)++;
 
+                if(strcmp(acesso.tipoAcesso,"ON")==0){
+                    (aulasOnline[pos].contEstudantesPresentes)++;
+                }else{
+                    (aulasOnline[pos].contAcessosGravacoes)++;
+                }
+
                 f = fopen("log_acessos.txt", "a");
                 if(f==NULL){
                     printf("\n\nImpossivel aceder ao ficheiro de logs");
@@ -75,7 +81,7 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
                     if(strcmp(acesso.tipoAcesso,"ON")==0){
                         fprintf(f, "Estudante %d - Aula %s (Online)\n", acesso.numEstudante, acesso.desigacaoAula);
                     }else{
-                        fprintf(f, "Estudante %d - Aula %s (Ofline)\n", acesso.numEstudante, acesso.desigacaoAula);
+                        fprintf(f, "Estudante %d - Aula %s (Offline)\n", acesso.numEstudante, acesso.desigacaoAula);
                     }
                     fclose(f);
                 }

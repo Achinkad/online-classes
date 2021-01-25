@@ -71,6 +71,13 @@ void mostraAulas(tipoAulasOnline aulasOnline)
     {
         printf("\nHora de inicio: N/A");
     }
+
+    if(strcmp(aulasOnline.estado, "R")==0){
+        printf("\n\tEstudantes Presentes: %d", aulasOnline.contEstudantesPresentes);
+        if(strcmp(aulasOnline.gravacao, "S")==0){
+            printf("\n\tAcessos a Gravacao: %d", aulasOnline.contEstudantesPresentes);
+        }
+    }
 }
 
 // Funcao que procura a designacao de uma aula e verifica a sua existencia
@@ -157,7 +164,15 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
             aulasOnline[*quantAulas].horaFim.hora = -1;
             aulasOnline[*quantAulas].horaFim.minuto = -1;
             aulasOnline[*quantAulas].horaFim.segundo = -1;
+            if(strcmp(dados.tipo,"T")==0){
+                (ucs[posUC].aulasT.contAgendadas)++;
+            }else if(strcmp(dados.tipo,"TP")==0){
+                (ucs[posUC].aulasTP.contAgendadas)++;
+            }else if(strcmp(dados.tipo,"PL")==0){
+                (ucs[posUC].aulasPL.contAgendadas)++;
+            }
             (*quantAulas)++;
+
         }
     }
     return aulasOnline;
@@ -420,11 +435,11 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAge
     }
 }
 
-tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
+tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[], int quantUC)
 {
     tipoAulasOnline *pAulasOnline;
     char designacao[MAX_STRING], verificao;
-    int i, pos, pQuantAulas;
+    int i, pos, posUC, pQuantAulas;
 
     pAulasOnline = aulasOnline;
 
@@ -451,6 +466,15 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
             {
                 printf("Erro na alocação de memória!\n\n");
                 aulasOnline = pAulasOnline;
+            }
+            //atualiza os contadores da uc
+            posUC=procuraUC(aulasOnline[pos].codigoUC,ucs,quantUC);
+            if(strcmp(aulasOnline[pos].tipo,"T")==0){
+                (ucs[posUC].aulasT.contAgendadas)--;
+            }else if(strcmp(aulasOnline[pos].tipo,"TP")==0){
+                (ucs[posUC].aulasTP.contAgendadas)--;
+            }else if(strcmp(aulasOnline[pos].tipo,"PL")==0){
+                (ucs[posUC].aulasPL.contAgendadas)--;
             }
             (*quantAulas)--;
             break;
@@ -480,9 +504,9 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas)
     return aulasOnline;
 }
 
-void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, int *quantAulasDecorrer, int *quantAulasAgendadas)
+void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasAgendadas)
 {
-    int pos, i;
+    int pos, posUC, i;
     char designacao[MAX_STRING];
     char opcoesGravacao[2][MAX_STRING] = {"S","N"};
 
@@ -496,6 +520,15 @@ void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, int *quantAulasD
         lerOpcao("Pretende gravar a aula? (S)im/(N)ão: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
         strcpy(aulasOnline[pos].estado, "D");
         printf("Início de aula registada com sucesso!\n\n");
+        //atualiza os contadores da uc
+        posUC=procuraUC(aulasOnline[pos].codigoUC,ucs,quantUC);
+        if(strcmp(aulasOnline[pos].tipo,"T")==0){
+            (ucs[posUC].aulasT.contAgendadas)--;
+        }else if(strcmp(aulasOnline[pos].tipo,"TP")==0){
+            (ucs[posUC].aulasTP.contAgendadas)--;
+        }else if(strcmp(aulasOnline[pos].tipo,"PL")==0){
+            (ucs[posUC].aulasPL.contAgendadas)--;
+        }
         (*quantAulasDecorrer)++;
         (*quantAulasAgendadas)--;
     }
@@ -513,9 +546,9 @@ void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, int *quantAulasD
     }
 }
 
-void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, int *quantAulasDecorrer, int *quantAulasRealizadas, int *quantAulasGravadas)
+void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasRealizadas, int *quantAulasGravadas)
 {
-    int pos, i;
+    int pos, posUC, i;
     char designacao[MAX_STRING];
 
     lerString("Indique a designacao da aula para registar o seu término: ", designacao, MAX_STRING);
@@ -528,8 +561,25 @@ void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, int *quantAula
         strcpy(aulasOnline[pos].estado, "R");
         printf("Término da aula registada com sucesso!\n\n");
 
+        //atualiza os contadores da uc
+        posUC=procuraUC(aulasOnline[pos].codigoUC,ucs,quantUC);
+        if(strcmp(aulasOnline[pos].tipo,"T")==0){
+            (ucs[posUC].aulasT.contRealizadas)++;
+        }else if(strcmp(aulasOnline[pos].tipo,"TP")==0){
+            (ucs[posUC].aulasTP.contRealizadas)++;
+        }else if(strcmp(aulasOnline[pos].tipo,"PL")==0){
+            (ucs[posUC].aulasPL.contRealizadas)++;
+        }
+
         if(strcmp(aulasOnline[pos].gravacao, "S") == 0)
         {
+            if(strcmp(aulasOnline[pos].tipo,"T")==0){
+                (ucs[posUC].aulasT.contGravadas)++;
+            }else if(strcmp(aulasOnline[pos].tipo,"TP")==0){
+                (ucs[posUC].aulasTP.contGravadas)++;
+            }else if(strcmp(aulasOnline[pos].tipo,"PL")==0){
+                (ucs[posUC].aulasPL.contGravadas)++;
+            }
             (*quantAulasGravadas)++;
         }
 

@@ -19,6 +19,9 @@ typedef struct{
 typedef struct{
     int quantAulas;
     int duracao; //em minutos
+    int contAgendadas;
+    int contRealizadas;
+    int contGravadas;
 }tipoAula;
 
 //Declaração das UC's
@@ -44,6 +47,8 @@ typedef struct{
     tipoHora horaFim;
     char estado[3];
     char gravacao[2];
+    int contEstudantesPresentes;
+    int contAcessosGravacoes;
 }tipoAulasOnline;
 
 //Declaração dos Acessos
