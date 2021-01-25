@@ -200,10 +200,13 @@ int main()
         case 'D':
             printf("\n\n---------------- DADOS ESTATISTICOS ------------------\n\n");
             printf("Media de presencas em cada aula online realizada: %d", obterMediaPresencasAulasRealizadas(aulasOnline, quantAulas,quantAulasRealizadas));
-            printf("\nPercentagem de UCs com Aulas Gravadas: %d%%", obterPercentagemUcsGravadas(ucs, quantUC, aulasOnline, quantAulas));
-            printf("\nRanking de uc's por acesso às gravações de forma decrescente: ");
-            rankingUcs(ucs, quantUC, aulasOnline, quantAulas);
-            printf("\n\n");
+            printf("\n\nPercentagem de UCs com Aulas Gravadas: %d%%", obterPercentagemUcsGravadas(ucs, quantUC, aulasOnline, quantAulas));
+            printf("\n\nRanking de uc's por acesso às gravações de forma decrescente:\n");
+            rankingUcs(ucs, quantUC);
+            ucMenorAulas(ucs, quantUC);
+            tipoAulaMaiorGravacao(aulasOnline, quantAulas);
+            aulasOnlineMaisTempo(aulasOnline, quantAulas);
+            printf("\n");
             break;
 
         case 'E':
