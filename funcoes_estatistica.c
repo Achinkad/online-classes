@@ -42,7 +42,7 @@ void rankingUcs(tipoUC ucs[], int quantUC)
         posMenor = i;
         for(j=i+1; j < quantUC; j++)
         {
-            if((ucs[j].contAcessosGravacoes) > (ucs[posMenor].contAcessosGravacoes))
+            if((ucs[j].contAcessosGravacoes) < (ucs[posMenor].contAcessosGravacoes))
             {
                 posMenor = j;
             }
@@ -54,7 +54,7 @@ void rankingUcs(tipoUC ucs[], int quantUC)
             ucs[posMenor] = ucs[i];
             ucs[i] = vAux;
         }
-        printf("-> Designação da UC: %s\n", ucs[i].designacao);
+        printf("-> Designação da UC: %s (%d)\n", ucs[i].designacao, ucs[i].contAcessosGravacoes);
     }
 }
 
