@@ -130,10 +130,10 @@ tipoData lerData(void)
     return data;
 }
 
-tipoHora lerHora(void)
+tipoHora lerHora(int min, int max)
 {
     tipoHora hora;
-    hora.hora = lerInteiro("Hora", 0, 23);
+    hora.hora = lerInteiro("Hora", min, max);
     hora.minuto = lerInteiro("Minuto", 0, 59);
     hora.segundo = lerInteiro("Segundo", 0, 59);
     return hora;

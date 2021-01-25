@@ -79,7 +79,7 @@ char menuEditarUC(tipoUC uc){
     return op;
 }
 
-int procuraUC(char codigo[MAX_STRING], tipoUC vetor[MAX_UC], int quantos){
+int procuraUC(char codigo[MAX_UC_CODIGO], tipoUC vetor[MAX_UC], int quantos){
     int i, posicao=-1;
     for(i=0;i<quantos;i++){
         if(strcmp(vetor[i].codigo,codigo) == 0){

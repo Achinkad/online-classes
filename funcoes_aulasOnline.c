@@ -72,9 +72,11 @@ void mostraAulas(tipoAulasOnline aulasOnline)
         printf("\nHora de inicio: N/A");
     }
 
-    if(strcmp(aulasOnline.estado, "R")==0){
+    if(strcmp(aulasOnline.estado, "R")==0)
+    {
         printf("\n\tEstudantes Presentes: %d", aulasOnline.contEstudantesPresentes);
-        if(strcmp(aulasOnline.gravacao, "S")==0){
+        if(strcmp(aulasOnline.gravacao, "S")==0)
+        {
             printf("\n\tAcessos a Gravacao: %d", aulasOnline.contAcessosGravacoes);
         }
     }
@@ -94,24 +96,80 @@ int procuraAula(char designacao[MAX_STRING], tipoAulasOnline aulasOnline[], int 
     return pos;
 }
 
-// Funcao que le os dados da estrutura tipoAulasOnline e retorna os seus valores
-tipoAulasOnline lerDadosAulas()
+tipoAulasOnline lerDadosAulas(tipoUC uc)
 {
     tipoAulasOnline e;
-    char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
     lerString("Indique o nome do docente: ", e.nomeDocente, MAX_STRING);
-    lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, e.tipo);
-    printf("Inserir data da aula.\n");
+    printf("Indique a data da aula a agendar.\n");
     e.data = lerData();
-    e.horaInicio = lerHora();
-    printf("\n\n");
+
+    if(strcmp(uc.regime, "D") == 0)
+    {
+        printf("Indique a hora de início da aula.\n");
+        e.horaInicio = lerHora(8, 18);
+    }
+    else
+    {
+        printf("Indique a hora de início da aula.\n");
+        e.horaInicio = lerHora(18, 24);
+    }
+
     return e;
+}
+
+void verificaTipoAula(tipoUC uc, int *verificaTipo, char tipo[])
+{
+    int quantTipoTotal = 0;
+
+    if(strcmp(tipo, "TP") == 0)
+    {
+        quantTipoTotal = uc.aulasTP.contAgendadas + uc.aulasTP.contRealizadas;
+        if(quantTipoTotal >= uc.aulasTP.quantAulas)
+        {
+            printf("Não é possível adicionar mais aulas TP para esta UC.\n\n");
+            *verificaTipo = 0;
+        }
+        else
+        {
+            *verificaTipo = 1;
+        }
+    }
+
+    if(strcmp(tipo, "T") == 0)
+    {
+        quantTipoTotal = uc.aulasT.contAgendadas + uc.aulasT.contRealizadas;
+
+        if(quantTipoTotal >= uc.aulasT.quantAulas)
+        {
+            printf("Não é possível adicionar mais aulas T para esta UC.\n\n");
+            *verificaTipo = 0;
+        }
+        else
+        {
+            *verificaTipo = 1;
+        }
+    }
+
+    if(strcmp(tipo, "PL") == 0)
+    {
+        quantTipoTotal = uc.aulasPL.contAgendadas + uc.aulasPL.contRealizadas;
+        if(quantTipoTotal >= uc.aulasPL.quantAulas)
+        {
+            printf("Não é possível adicionar mais aulas PL para esta UC.\n\n");
+            *verificaTipo = 0;
+        }
+        else
+        {
+            *verificaTipo = 1;
+        }
+    }
 }
 
 tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC, int *quantAulasAgendadas)
 {
-    int posAula, posUC, i;
-    char designacao[MAX_STRING], codigoUC[MAX_UC_CODIGO];
+    int posAula, posUC, pos, i, verificaTipo=0;
+    char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
+    char designacao[MAX_STRING], codigoUC[MAX_UC_CODIGO], tipo[MAX_STRING], tipoRegime;
     tipoAulasOnline *pAulasOnline, dados;
     pAulasOnline = aulasOnline;
 
@@ -131,7 +189,7 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
         {
             if(quantUC > 0)
             {
-                printf("Código da UC não existente! Há %d opções possíveis:\n", quantUC);
+                printf("\nCódigo da UC não existente! Há %d opções possíveis:\n", quantUC);
                 for(i = 0; i < quantUC; i++)
                 {
                     printf("- %s -> %s\n", ucs[i].designacao, ucs[i].codigo);
@@ -140,49 +198,72 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
             }
             else
             {
-                printf("O codigo da UC nao existe, porque nao ha ucs inseridas!\n");
+                printf("\nO código da UC não existe, visto não haver UC's inseridas!\n");
             }
         }
         else
         {
-            dados = lerDadosAulas();
-            aulasOnline = realloc(aulasOnline, (*quantAulas+1)*sizeof(tipoAulasOnline));
-            if(aulasOnline == NULL)
-            {
-                printf("Erro! Impossivel agendar aula.");
-                aulasOnline = pAulasOnline;
-            }
-            else
-            {
-                aulasOnline[*quantAulas] = dados;
-                strcpy(aulasOnline[*quantAulas].designacao, designacao);
-                strcpy(aulasOnline[*quantAulas].codigoUC, codigoUC);
-                strcpy(aulasOnline[*quantAulas].estado, "A");
-                strcpy(aulasOnline[*quantAulas].gravacao, "N");
-                aulasOnline[*quantAulas].horaFim.hora = -1;
-                aulasOnline[*quantAulas].horaFim.minuto = -1;
-                aulasOnline[*quantAulas].horaFim.segundo = -1;
-                aulasOnline[*quantAulas].contAcessosGravacoes = 0;
-                aulasOnline[*quantAulas].contEstudantesPresentes = 0;
+            lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpção: ", opcoesTipo, 3, tipo);
+            verificaTipoAula(ucs[posUC], &verificaTipo, tipo);
 
-                if(strcmp(dados.tipo, "T") == 0)
+            if(verificaTipo == 1)
+            {
+                dados = lerDadosAulas(ucs[posUC]);
+
+                for(i=0; i<*quantAulas; i++)
                 {
-                    (ucs[posUC].aulasT.contAgendadas)++;
+                    if(strcmp(aulasOnline[i].codigoUC, codigoUC) == 0 && aulasOnline[i].data.ano == dados.data.ano && aulasOnline[i].data.mes == dados.data.mes && aulasOnline[i].data.dia == dados.data.dia)
+                    {
+                        pos = i;
+                    }
                 }
-                else if(strcmp(dados.tipo, "TP") == 0)
+
+                if(pos != -1 && aulasOnline[pos].horaInicio.hora == dados.horaInicio.hora && aulasOnline[pos].horaInicio.minuto == dados.horaInicio.minuto)
                 {
-                    (ucs[posUC].aulasTP.contAgendadas)++;
+                    printf("\nATENÇÃO! Já existe uma aula da mesma UC agendada para este horário!\n\n");
                 }
-                else if(strcmp(dados.tipo, "PL") == 0)
+                else
                 {
-                    (ucs[posUC].aulasPL.contAgendadas)++;
+                    aulasOnline = realloc(aulasOnline, (*quantAulas+1)*sizeof(tipoAulasOnline));
+                    if(aulasOnline == NULL)
+                    {
+                        printf("Erro! Impossivel agendar aula.");
+                        aulasOnline = pAulasOnline;
+                    }
+                    else
+                    {
+                        aulasOnline[*quantAulas] = dados;
+                        strcpy(aulasOnline[*quantAulas].designacao, designacao);
+                        strcpy(aulasOnline[*quantAulas].codigoUC, codigoUC);
+                        strcpy(aulasOnline[*quantAulas].estado, "A");
+                        strcpy(aulasOnline[*quantAulas].gravacao, "N");
+                        aulasOnline[*quantAulas].horaFim.hora = -1;
+                        aulasOnline[*quantAulas].horaFim.minuto = -1;
+                        aulasOnline[*quantAulas].horaFim.segundo = -1;
+                        aulasOnline[*quantAulas].contAcessosGravacoes = 0;
+                        aulasOnline[*quantAulas].contEstudantesPresentes = 0;
+
+                        if(strcmp(tipo, "T") == 0)
+                        {
+                            (ucs[posUC].aulasT.contAgendadas)++;
+                        }
+                        else if(strcmp(tipo, "TP") == 0)
+                        {
+                            (ucs[posUC].aulasTP.contAgendadas)++;
+                        }
+                        else if(strcmp(tipo, "PL") == 0)
+                        {
+                            (ucs[posUC].aulasPL.contAgendadas)++;
+                        }
+                        (*quantAulas)++;
+                        (*quantAulasAgendadas)++;
+                        printf("Aula agendada com sucesso!\n\n");
+                        return aulasOnline;
+                    }
                 }
-                (*quantAulas)++;
-                (*quantAulasAgendadas)++;
             }
         }
     }
-    return aulasOnline;
 }
 
 void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
@@ -446,6 +527,19 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tip
                 aulasOnline = pAulasOnline;
             }
 
+            posUC = procuraUC(aulasOnline[pos].codigoUC, ucs, quantUC);
+            if(strcmp(aulasOnline[pos].tipo, "T") == 0)
+            {
+                (ucs[posUC].aulasT.contAgendadas)--;
+            }
+            else if(strcmp(aulasOnline[pos].tipo, "TP") == 0)
+            {
+                (ucs[posUC].aulasTP.contAgendadas)--;
+            }
+            else if(strcmp(aulasOnline[pos].tipo, "PL") == 0)
+            {
+                (ucs[posUC].aulasPL.contAgendadas)--;
+            }
             (*quantAulas)--;
             (*quantAulasAgendadas)--;
             break;
@@ -533,7 +627,7 @@ void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], 
     if(pos != -1 && strcmp(aulasOnline[pos].estado, "D") == 0)
     {
         printf("Insira a hora de término da aula.\n");
-        aulasOnline[pos].horaFim = lerHora();
+        aulasOnline[pos].horaFim = lerHora(0, 23);
         strcpy(aulasOnline[pos].estado, "R");
         printf("Término da aula registada com sucesso!\n\n");
 
