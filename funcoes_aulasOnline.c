@@ -396,10 +396,9 @@ char menuEditarAula(tipoAulasOnline aula)
 
     printf("\n\n\tA - Editar a data da aula");
     printf("\n\tB - Editar a hora de início da aula");
-    printf("\n\tC - Editar tipo de aula");
-    printf("\n\tD - Editar a data da aula");
+    printf("\n\tC - Editar nome do docente");
     printf("\n\tS - Concluir edição");
-    printf("\n\nInsira uma opcao: ");
+    printf("\n\nInsira uma opção: ");
     scanf("%c", &op);
     limpaBufferStdin();
     op = toupper(op);
@@ -414,6 +413,7 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAge
 
     lerString("Indique a designacao da aula a editar: ", designacao, MAX_STRING);
     pos = procuraAula(designacao, aulasOnline, quantAulas);
+    posUC = procuraUC(aulasOnline[pos].codigoUC, ucs, quantUC);
 
     if(pos != -1)
     {
@@ -427,18 +427,25 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAge
                 printf("Data da aula editada com sucesso!\n");
                 break;
             case 'B':
-                lerString("Indique o novo nome do docente: ", aulasOnline[pos].nomeDocente, MAX_STRING);
-                printf("Nome do docente editado com sucesso!\n");
+                if(strcmp(ucs[posUC].regime, "D") == 0)
+                {
+                    printf("Indique a nova hora de início de aula.\n");
+                    aulasOnline[pos].horaInicio = lerHora(8, 18);
+                    printf("Hora de início de aula editada com sucesso!\n");
+                }
+                else
+                {
+                    printf("Indique a nova hora de início de aula.\n");
+                    aulasOnline[pos].horaInicio = lerHora(18, 24);
+                    printf("Hora de início de aula editada com sucesso!\n");
+                }
                 break;
             case 'C':
                 lerString("Indique o novo nome do docente: ", aulasOnline[pos].nomeDocente, MAX_STRING);
                 printf("Nome do docente editado com sucesso!\n");
                 break;
-            case 'D':
-                aulasOnline[pos].data = lerData();
-                printf("Data da aula editada com sucesso!\n");
-                break;
             case 'S':
+                printf("\n");
                 break;
             default:
                 printf("Opção invalida!");
@@ -552,19 +559,28 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tip
 
 void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasAgendadas)
 {
-    int pos, posUC, i;
+    int pos, posUC, i, quantAulasCodigo=0;
     char designacao[MAX_STRING];
     char opcoesGravacao[2][MAX_STRING] = {"S","N"};
 
     lerString("Indique a designação da aula para registar o seu início: ", designacao, MAX_STRING);
     pos = procuraAula(designacao, aulasOnline, quantAulas);
 
-    if(pos != -1 && strcmp(aulasOnline[pos].estado, "A") == 0)
+    for(i=0; i<quantAulas; i++)
+    {
+        if(strcmp(aulasOnline[i].codigoUC, aulasOnline[pos].codigoUC) == 0 && strcmp(aulasOnline[i].estado, "D") == 0)
+        {
+            quantAulasCodigo++;
+        }
+    }
+
+    if(pos != -1 && strcmp(aulasOnline[pos].estado, "A") == 0 && quantAulasCodigo != 0)
     {
         lerOpcao("Pretende gravar a aula? (S)im/(N)ão: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
         strcpy(aulasOnline[pos].estado, "D");
         printf("Início de aula registada com sucesso!\n\n");
         posUC = procuraUC(aulasOnline[pos].codigoUC, ucs, quantUC);
+
         if(strcmp(aulasOnline[pos].tipo, "T") == 0)
         {
             (ucs[posUC].aulasT.contAgendadas)--;
@@ -663,13 +679,17 @@ void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], 
     }
 }
 
-void informacaoAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC){
+void informacaoAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC)
+{
     char designacao[MAX_STRING];
     int pos, posUC, i, aulasRestantes=0;
 
-    if(quantAulas==0){
+    if(quantAulas==0)
+    {
         printf("\n\nNao existem aulas agendadas!");
-    }else{
+    }
+    else
+    {
         lerString("Indique a designacao da Aula Online:", designacao,MAX_STRING);
         pos = procuraAula(designacao, aulasOnline, quantAulas);
 
@@ -678,11 +698,16 @@ void informacaoAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[],
             printf("\n----- Dados sobre a Aula Online %s -----\n", aulasOnline[pos].designacao);
             mostraAulas(aulasOnline[pos]);
             posUC=procuraUC(aulasOnline[pos].codigoUC, ucs, quantUC);
-            if(strcmp(aulasOnline[pos].tipo, "T")==0){
+            if(strcmp(aulasOnline[pos].tipo, "T")==0)
+            {
                 aulasRestantes=obterAulasRestantes(ucs[posUC].aulasT);
-            }else if(strcmp(aulasOnline[pos].tipo, "TP")==0){
+            }
+            else if(strcmp(aulasOnline[pos].tipo, "TP")==0)
+            {
                 aulasRestantes=obterAulasRestantes(ucs[posUC].aulasTP);
-            }else if(strcmp(aulasOnline[pos].tipo, "PL")==0){
+            }
+            else if(strcmp(aulasOnline[pos].tipo, "PL")==0)
+            {
                 aulasRestantes=obterAulasRestantes(ucs[posUC].aulasPL);
             }
             printf("\n\tUnidade Curricular: %s", ucs[posUC].designacao);
