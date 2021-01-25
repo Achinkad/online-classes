@@ -108,7 +108,7 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
         printf("O numero de Estudante que colocou não existe.\nEstudantes registados:\n");
         for(i=0; i<quantEstudantes; i++)
         {
-            printf("-> %s\n", estudantes[i].nome);
+            printf("-> %d - %s\n",estudantes[i].numero, estudantes[i].nome);
 
         }
         printf("\n");
