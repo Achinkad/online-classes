@@ -13,5 +13,6 @@ tipoAula criarTipoAula(char tipo[MAX_STRING]){
     tipoAula.duracao=lerInteiro("Indique a duracao(minutos) de aulas",1,300);
     tipoAula.contAgendadas=0;
     tipoAula.contRealizadas=0;
+    tipoAula.contGravadas=0;
     return tipoAula;
 }
