@@ -574,7 +574,7 @@ void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], in
         }
     }
 
-    if(pos != -1 && strcmp(aulasOnline[pos].estado, "A") == 0 && quantAulasCodigo != 0)
+    if(pos != -1 && strcmp(aulasOnline[pos].estado, "A") == 0 && quantAulasCodigo == 0)
     {
         lerOpcao("Pretende gravar a aula? (S)im/(N)ão: ", opcoesGravacao, 2, aulasOnline[pos].gravacao);
         strcpy(aulasOnline[pos].estado, "D");
