@@ -10,18 +10,21 @@
 #include "funcoes_uc.h"
 #include "funcoes_aulasOnline.h"
 #include "funcoes_acessos.h"
+#include "funcoes_estudante.h"
 
 char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas);
 char menuGestaoFicheiro();
 char menuAulas(int quantAulas);
 char menuGestaoAcessos();
+char menuEstudantes();
 
 int main()
 {
     tipoUC ucs[MAX_UC];
+    tipoEstudantes estudante[MAX_STRING];
     tipoAulasOnline *aulasOnline = NULL;
     tipoAcesso *acessos = NULL;
-    int quantUC=0, quantAulas=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
+    int quantUC=0, *quantEstudantes=0, quantAulas=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
     char opcao, opcaosubMenu, designacao[MAX_STRING];
     setlocale(LC_ALL, "");
 
@@ -101,7 +104,7 @@ int main()
                     break;
 
                 case 'C':
-                    if(quantAulas > 0 && quantAulasAgendadas > 0)
+                    if(quantAulas > 0)
                     {
                         iniciarAula(aulasOnline, quantAulas, &quantAulasDecorrer, &quantAulasAgendadas);
                     }
@@ -185,6 +188,36 @@ int main()
             while(opcaosubMenu!='S');
             break;
 
+        case 'F':
+            printf("\n");
+            do
+            {
+                opcaosubMenu = menuEstudantes();
+                switch(opcaosubMenu)
+                {
+                    case 'A':
+                        estudante[*quantEstudantes] = novoEstudante();
+                        break;
+
+                    case 'B':
+                        printf("Editar ESTUDANTE");
+                        break;
+
+                    case 'C':
+                        printf("Eliminar ESTUDANTE");
+                        break;
+
+                    case 'S':
+                        printf("\n\n");
+                        break;
+
+                    default:
+                        printf("Opção inválida! Tente outra vez.\n\n");
+                        break;
+                }
+            }while(opcaosubMenu != 'S');
+            break;
+
         case 'S':
             break;
         default:
@@ -207,7 +240,7 @@ char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int qu
     printf("Unidades Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulasAgendadas);
     printf("Aulas realizadas: %d\t\tAulas gravadas: %d\n\n", quantAulasRealizadas, quantAulasGravadas);
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
-    printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n");
+    printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n\tF - Gestao de Estudantes\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
     scanf("%c", &opcao);
@@ -256,6 +289,22 @@ char menuGestaoAcessos()
     printf("\tA - Registar Acessos de Estudante\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
+    scanf("%c", &opcao);
+    limpaBufferStdin();
+    opcao = toupper(opcao);
+    return opcao;
+}
+
+// Apresentação da estrutura do submenu da gestão de estudantes
+char menuEstudantes()
+{
+    char opcao;
+    printf("------------------ Gestão de Estudantes ------------------\n\n");
+    printf("\tA - Adicionar novo estudante\n");
+    printf("\tA - Editar estudante\n");
+    printf("\tA - Eliminar estudante\n");
+    printf("\tS - Sair\n");
+    printf("\nInsira uma opção: ");
     scanf("%c", &opcao);
     limpaBufferStdin();
     opcao = toupper(opcao);

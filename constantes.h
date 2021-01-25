@@ -53,4 +53,9 @@ typedef struct{
     char tipoAcesso[4];
 }tipoAcesso;
 
+typedef struct{
+    int numero;
+    char nome[MAX_STRING];
+}tipoEstudantes;
+
 #endif // CONSTANTES_H_INCLUDED
