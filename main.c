@@ -38,11 +38,13 @@ int main()
 
     for(i=0; i<quantUC; i++)
     {
-        quantAulasAgendadas+=obterTotalAgendado(ucs[i]);
-        quantAulasRealizadas+=obterTotalRealizado(ucs[i]);
-        quantAulasGravadas+=obterTotalGravadas(ucs[i]);
+        quantAulasAgendadas += obterTotalAgendado(ucs[i]);
+        quantAulasRealizadas += obterTotalRealizado(ucs[i]);
+        quantAulasGravadas += obterTotalGravadas(ucs[i]);
     }
-    for(i=0;i<quantAulas;i++){
+
+    for(i=0; i<quantAulas; i++)
+    {
         if(strcmp(aulasOnline[i].estado, "D") == 0)
         {
             quantAulasDecorrer++;
@@ -55,7 +57,7 @@ int main()
         switch(opcao)
         {
         case 'A':
-            printf("\n\n");
+            printf("\n");
             do{
                 opcaosubMenu=menuUC();
                 switch(opcaosubMenu){
@@ -82,7 +84,9 @@ int main()
                     case 'E':
                         editarUC(ucs, &quantUC);
                     break;
-                    case 'S': break;
+                    case 'S':
+                        printf("\n");
+                    break;
                     default:
                         printf("Opção Inválida");
                     break;
@@ -130,7 +134,7 @@ int main()
                     break;
 
                 case 'C':
-                    if(quantAulas > 0)
+                    if(quantAulas > 0 && quantAulasAgendadas > 0)
                     {
                         iniciarAula(aulasOnline, quantAulas, ucs, quantUC, &quantAulasDecorrer, &quantAulasAgendadas);
                     }
@@ -175,7 +179,7 @@ int main()
                     escreveFichBinEstudantes(estudante, quantEstudantes);
                     escreveFichBinAulasOnline(aulasOnline, quantAulas);
                     escreveFichBinAcessos(acessos, quantAcessos);
-                    printf("Dados registados no ficheiro com sucesso!\n\n");
+                    printf("Dados registados no ficheiro com sucesso!\n");
                     break;
                 case 'L':
                     leFichBinUCs(ucs, &quantUC);
@@ -226,7 +230,7 @@ int main()
                 switch(opcaosubMenu)
                 {
                     case 'A':
-                        if(quantEstudantes >= 100)
+                        if(quantEstudantes > 100)
                         {
                             printf("Não é possível criar mais estudantes!\n\n");
                         }
@@ -370,7 +374,7 @@ char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int qu
 // Apresentação da estrutura do submenu das UCs
 char menuUC(){
     char op;
-    printf("\n\n--------- GESTAO DE UC'S ---------\n\n");
+    printf("--------- Gestão de unidades curriculares ---------\n\n");
     printf("\tI - Inserir nova UC\n");
     printf("\tL - Listar UC's\n");
     printf("\tE - Editar UC\n");
@@ -386,7 +390,7 @@ char menuUC(){
 char menuAulas(int quantAulas)
 {
     char opcao;
-    printf("------------------ Aulas Online ------------------\n\n");
+    printf("------------------ Gestão de Aulas Online ------------------\n\n");
     printf("Quantidade de aulas registadas: %d\n\n", quantAulas);
     printf("\tA - Agendar aula online\n\tB - Alterar/Eliminar aula agendada\n\tC - Registar inicio de uma aula\n");
     printf("\tD - Registar o fim de uma aula\n\tE - Listar dados das aula online\n");
