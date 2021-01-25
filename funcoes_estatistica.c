@@ -32,33 +32,115 @@ int obterPercentagemUcsGravadas(tipoUC ucs[], int quantUC){
     return resultado;
 }
 
-
-void rankingUcs(tipoUC ucs[], int quantUC, tipoAulasOnline aulasOnline[], int quantAulas)
+void rankingUcs(tipoUC ucs[], int quantUC)
 {
-    int i, j, posmenor;
-    tipoUC aux;
+    int i, j, posMenor;
+    tipoUC vAux;
 
     for(i=0; i < quantUC-1; i++)
     {
-        posmenor = i;
+        posMenor = i;
         for(j=i+1; j < quantUC; j++)
         {
-            if((ucs[j].aulasPL.contGravadas + ucs[j].aulasT.contGravadas + ucs[j].aulasTP.contGravadas) > (ucs[posmenor].aulasPL.contGravadas + ucs[posmenor].aulasT.contGravadas + ucs[posmenor].aulasTP.contGravadas))
+            if((ucs[j].contAcessosGravacoes) > (ucs[posMenor].contAcessosGravacoes))
             {
-                posmenor = j;
+                posMenor = j;
             }
         }
 
-        if(posmenor != i)
+        if(posMenor != i)
         {
-            aux = ucs[posmenor];
-            ucs[posmenor] = ucs[i];
-            ucs[i] = aux;
+            vAux = ucs[posMenor];
+            ucs[posMenor] = ucs[i];
+            ucs[i] = vAux;
+        }
+        printf("-> Designação da UC: %s\n", ucs[i].designacao);
+    }
+}
+
+void ucMenorAulas(tipoUC ucs[], int quantUC)
+{
+    int i, j, posMenor;
+    tipoUC vAux;
+
+    for(i=0; i < quantUC-1; i++)
+    {
+        posMenor = i;
+        for(j=i+1; j < quantUC; j++)
+        {
+            if((ucs[j].aulasT.contRealizadas + ucs[j].aulasPL.contRealizadas + ucs[j].aulasTP.contRealizadas) > (ucs[posMenor].aulasPL.contRealizadas + ucs[posMenor].aulasT.contRealizadas + ucs[posMenor].aulasTP.contRealizadas))
+            {
+                posMenor = j;
+            }
+        }
+
+        if(posMenor != i)
+        {
+            vAux = ucs[posMenor];
+            ucs[posMenor] = ucs[i];
+            ucs[i] = vAux;
         }
     }
+    printf("\nUC com menor quantidade de aulas online realizadas: %s\n", ucs[i].designacao);
+}
 
-    for(i=0; i < quantUC; i++)
+void tipoAulaMaiorGravacao(tipoAulasOnline aulas[], int quantAulas)
+{
+    int i, j, posMenor;
+    tipoAulasOnline vAux;
+
+    for(i=0; i < quantAulas-1; i++)
     {
-        printf("Designação da UC: %s\n", aux.designacao);
+        posMenor = i;
+        for(j=i+1; j < quantAulas; j++)
+        {
+            if((aulas[j].contAcessosGravacoes) < (aulas[posMenor].contAcessosGravacoes))
+            {
+                posMenor = j;
+            }
+        }
+
+        if(posMenor != i)
+        {
+            vAux = aulas[posMenor];
+            aulas[posMenor] = aulas[i];
+            aulas[i] = vAux;
+        }
     }
+    printf("\nTipo de aula com mais gravações: %s\n", aulas[i].tipo);
+}
+
+void aulasOnlineMaisTempo(tipoAulasOnline aulas[], int quantAulas)
+{
+    int i, j, posMenor;
+    tipoAulasOnline vAux;
+
+    for(i=0; i < quantAulas-1; i++)
+    {
+        posMenor = i;
+        for(j=i+1; j < quantAulas; j++)
+        {
+            if(strcmp(aulas[j].estado, "R") == 0)
+            {
+                if((aulas[j].data.ano) < (aulas[posMenor].data.ano))
+                {
+                    if((aulas[j].data.mes) < (aulas[posMenor].data.mes))
+                    {
+                        if((aulas[j].data.dia) < (aulas[posMenor].data.dia))
+                        {
+                            posMenor = j;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(posMenor != i)
+        {
+            vAux = aulas[posMenor];
+            aulas[posMenor] = aulas[i];
+            aulas[i] = vAux;
+        }
+    }
+    printf("\nAula online realizada a mais tempo: %s\n", aulas[i].designacao);
 }
