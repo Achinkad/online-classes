@@ -99,6 +99,7 @@ tipoUC lerDadosUC(){
     e.aulasT=criarTipoAula("T");
     e.aulasTP=criarTipoAula("TP");
     e.aulasPL=criarTipoAula("PL");
+    e.contAcessosGravacoes=0;
     return e;
 }
 

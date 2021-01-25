@@ -6,9 +6,10 @@
 #include "constantes.h"
 #include "funcoes_auxiliares.h"
 #include "funcoes_aulasOnline.h"
+#include "funcoes_uc.h"
 
-tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnline aulasOnline[], int *quantAulas, int quantAulasADecorrer, int quantAulasGravadas){
-    int i, pos;
+tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUCs, int quantAulasADecorrer, int quantAulasGravadas){
+    int i, pos, posUC;
     tipoAcesso acesso;
     tipoAcesso *pAcessos=acessos;
     char designacao[MAX_STRING];
@@ -17,7 +18,7 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
     //mostrar as aulas a decorrer no momento
     printf("\n\nAulas a Decorrer neste momento:\n");
     if(quantAulasADecorrer>0){
-        for(i=0;i<*quantAulas;i++){
+        for(i=0;i<quantAulas;i++){
             if(strcmp(aulasOnline[i].estado,"D")==0){
                 printf("\n|  Designacao:%s", aulasOnline[i].designacao);
                 printf("\n|\tInicio: %d:%d", aulasOnline[i].horaInicio.hora, aulasOnline[i].horaInicio.minuto);
@@ -31,7 +32,7 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
     //mostrar as aulas gravadas disponíveis
     printf("\n\nAulas realizadas e gravadas:\n");
     if(quantAulasGravadas>0){
-        for(i=0;i<*quantAulas;i++){
+        for(i=0;i<quantAulas;i++){
             if(strcmp(aulasOnline[i].estado,"R")==0&&strcmp(aulasOnline[i].gravacao,"S")==0){
                 printf("\n|  Designacao:%s", aulasOnline[i].designacao);
                 printf("\n|\tInicio: %d:%d", aulasOnline[i].horaInicio.hora, aulasOnline[i].horaInicio.minuto);
@@ -46,7 +47,7 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
         //pedir designação da aula
         do{
             lerString("\n\nIndique a aula que deseja assistir (a decorrer ou gravada) através da sua designacao:", designacao, MAX_STRING);
-            pos=procuraAula(designacao, aulasOnline, *quantAulas);
+            pos=procuraAula(designacao, aulasOnline, quantAulas);
             if(pos==-1){
                 printf("\n\nAula nao encontrada!");
             }
@@ -62,6 +63,11 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
                     strcpy(acesso.tipoAcesso,"ON");
                 }else{
                     strcpy(acesso.tipoAcesso,"OFF");
+
+                    //incrementar acessos na uc quando são acessos a gravações
+                    posUC=procuraUC(designacao,ucs,quantUCs);
+                    ucs[posUC].contAcessosGravacoes++;
+                    printf("\n\nAcessos: %d\n\n", ucs[posUC].contAcessosGravacoes);
                 }
                 strcpy(acesso.desigacaoAula, designacao);
                 acessos = realloc(acessos,(*quantAcessos+1)*sizeof(tipoAcesso));

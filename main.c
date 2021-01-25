@@ -213,7 +213,7 @@ int main()
                 switch(opcaosubMenu)
                 {
                 case 'A':
-                    acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, &quantAulas, quantAulasDecorrer, quantAulasGravadas);
+                    acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, quantAulas, ucs, quantUC, quantAulasDecorrer, quantAulasGravadas);
                     break;
                 case 'B':
                     verificarPresencas(aulasOnline, quantAulas, acessos, quantAcessos);

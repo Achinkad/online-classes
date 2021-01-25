@@ -35,6 +35,7 @@ typedef struct{
     tipoAula aulasT;
     tipoAula aulasTP;
     tipoAula aulasPL;
+    int contAcessosGravacoes;
 }tipoUC;
 
 //Declaração das Aulas Online

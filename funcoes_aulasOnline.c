@@ -204,7 +204,6 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
         else
         {
             lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpção: ", opcoesTipo, 3, tipo);
-            printf("-----%s----", tipo);
             verificaTipoAula(ucs[posUC], &verificaTipo, tipo);
 
             if(verificaTipo == 1)
