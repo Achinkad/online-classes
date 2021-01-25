@@ -70,7 +70,6 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
                         //incrementar acessos na uc quando são acessos a gravações
                         posUC=procuraUC(designacao,ucs,quantUCs);
                         ucs[posUC].contAcessosGravacoes++;
-                        printf("\n\nAcessos: %d\n\n", ucs[posUC].contAcessosGravacoes);
                     }
                     strcpy(acesso.desigacaoAula, designacao);
                     acessos = realloc(acessos,(*quantAcessos+1)*sizeof(tipoAcesso));
@@ -98,7 +97,6 @@ tipoAcesso *registarAcesso(tipoAcesso acessos[], int *quantAcessos, tipoAulasOnl
                             }
                             fclose(f);
                         }
-
                         printf("\nRegisto de acesso adicionado com sucesso!!");
                     }
                 }
