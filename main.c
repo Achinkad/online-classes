@@ -39,14 +39,9 @@ int main()
     for(i=0; i<quantUC; i++)
     {
         quantAulasAgendadas+=obterTotalAgendado(ucs[i]);
+        quantAulasDecorrer+=obterTotalDecorrer(ucs[i]);
         quantAulasRealizadas+=obterTotalRealizado(ucs[i]);
         quantAulasGravadas+=obterTotalGravadas(ucs[i]);
-    }
-    for(i=0;i<quantAulas;i++){
-        if(strcmp(aulasOnline[i].estado, "D") == 0)
-        {
-            quantAulasDecorrer++;
-        }
     }
 
     do
@@ -153,6 +148,10 @@ int main()
 
                 case 'E':
                     listaAulas(aulasOnline, quantAulas);
+                    break;
+
+                case 'F':
+                    informacaoAula(aulasOnline, quantAulas, ucs, quantUC);
                     break;
 
                 case 'S':
@@ -389,7 +388,7 @@ char menuAulas(int quantAulas)
     printf("------------------ Aulas Online ------------------\n\n");
     printf("Quantidade de aulas registadas: %d\n\n", quantAulas);
     printf("\tA - Agendar aula online\n\tB - Alterar/Eliminar aula agendada\n\tC - Registar inicio de uma aula\n");
-    printf("\tD - Registar o fim de uma aula\n\tE - Listar dados das aula online\n");
+    printf("\tD - Registar o fim de uma aula\n\tE - Listar dados das aula online\n\tF - Procurar Aula Online\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
     scanf("%c", &opcao);

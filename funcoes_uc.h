@@ -6,6 +6,8 @@
 int obterTotalAgendado(tipoUC uc);
 int obterTotalRealizado(tipoUC uc);
 int obterTotalGravadas(tipoUC uc);
+int obterTotalDecorrer(tipoUC uc);
+int obterAulasRestantes(tipoAula tipoAula);
 
 void mostrarUC(tipoUC uc); //funcao para apresentar os dados de uma uc especifica
 char menuGeralUC(); //funcao para apresentar as opcoes da gestao de ucs

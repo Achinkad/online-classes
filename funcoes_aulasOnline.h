@@ -16,4 +16,6 @@ tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tip
 void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasAgendadas);
 void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasRealizadas, int *quantAulasGravadas);
 
+void informacaoAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC);
+
 #endif // FUNCOES_AULASONLINE_H_INCLUDED

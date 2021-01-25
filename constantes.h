@@ -22,6 +22,7 @@ typedef struct{
     int contAgendadas;
     int contRealizadas;
     int contGravadas;
+    int aDecorrer; //0-não está a decorrer; 1-está a decorrer
 }tipoAula;
 
 //Declaração das UC's

@@ -28,6 +28,19 @@ int obterTotalGravadas(tipoUC uc){
     total+=uc.aulasPL.contGravadas;
     return total;
 }
+int obterTotalDecorrer(tipoUC uc){
+    int total=0;
+    total+=uc.aulasT.aDecorrer;
+    total+=uc.aulasTP.aDecorrer;
+    total+=uc.aulasPL.aDecorrer;
+    return total;
+}
+int obterAulasRestantes(tipoAula tipoAula){
+    int restantes;
+    printf("---%d----", tipoAula.aDecorrer);
+    restantes=tipoAula.quantAulas-(tipoAula.contAgendadas+tipoAula.aDecorrer+tipoAula.contRealizadas);
+    return restantes;
+}
 
 void mostrarUC(tipoUC uc){
     int i;
@@ -143,13 +156,13 @@ void editarUC(tipoUC ucs[MAX_UC], int *quantUC){
                     lerOpcao("Indique o Regime (D)iurno ou (PL)Pos-laboral: ", opcoesRegime, 2, ucs[posicao].regime);
                 break;
                 case 'E':
-                    ucs[posicao].aulasT=criarTipoAula("T");
+                    ucs[posicao].aulasT=editarTipoAula(ucs[posicao].aulasT, "T");
                 break;
                 case 'F':
-                    ucs[posicao].aulasTP=criarTipoAula("TP");
+                    ucs[posicao].aulasTP=editarTipoAula(ucs[posicao].aulasTP, "TP");
                 break;
                 case 'G':
-                    ucs[posicao].aulasPL=criarTipoAula("PL");
+                    ucs[posicao].aulasPL=editarTipoAula(ucs[posicao].aulasPL, "PL");
                 break;
                 case 'S':
                 break;
