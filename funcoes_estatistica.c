@@ -18,17 +18,12 @@ int obterMediaPresencasAulasRealizadas(tipoAulasOnline aulasOnline[], int quantA
     return resultado;
 }
 
-int obterPercentagemUcsGravadas(tipoUC ucs[], int quantUC, tipoAulasOnline aulasOnline[], int quantAulas){
-    int i, i2, contUcsGravadas=0, resultado=0;
+int obterPercentagemUcsGravadas(tipoUC ucs[], int quantUC){
+    int i, contUcsGravadas=0, resultado=0;
     if(quantUC!=0){
         for(i=0;i<quantUC;i++){
-            for(i2=0; i<quantAulas; i++){
-                if(strcmp(aulasOnline[i2].codigoUC, ucs[i].codigo)==0){
-                    if(strcmp(aulasOnline[i2].codigoUC, "S")==0){
-                        contUcsGravadas++;
-                        i2=quantAulas;
-                    }
-                }
+            if(ucs[i].aulasPL.contGravadas>0||ucs[i].aulasT.contGravadas>0||ucs[i].aulasTP.contGravadas>0){
+                contUcsGravadas++;
             }
         }
         resultado=(contUcsGravadas*100)/quantUC;

@@ -69,7 +69,7 @@ void mostraAulas(tipoAulasOnline aulasOnline)
     }
     else
     {
-        printf("\nHora de inicio: N/A");
+        printf("\nHora de fim: N/A");
     }
 
     if(strcmp(aulasOnline.estado, "R")==0)

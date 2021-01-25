@@ -130,3 +130,41 @@ void escreveFichBinAcessos(tipoAcesso acessos[], int quantAcessos){
         fclose(f);
     }
 }
+
+void verificarPresencas(tipoAulasOnline aulasOnline[], int quantAulas, tipoAcesso acessos[], int quantAcessos){
+    int pos, i;
+    char designacao[MAX_STRING];
+    if(quantAulas==0){
+        printf("\n\nNao existem aulas!");
+    }else{
+        lerString("Indique a designacao da Aula Online:", designacao,MAX_STRING);
+        pos = procuraAula(designacao, aulasOnline, quantAulas);
+
+        if(pos != -1)
+        {
+            if(strcmp(aulasOnline[pos].estado,"A")==0){
+                printf("\nEsta aula ainda nao foi iniciada!");
+            }else{
+                printf("\n------------ Presencas na Aula %s -----------\n", aulasOnline[pos].designacao);
+                printf("Data: %.2d-%.2d-%.2d %.2d:%.2d \tDocente:%s", aulasOnline[pos].data.dia, aulasOnline[pos].data.mes, aulasOnline[pos].data.ano, aulasOnline[pos].horaInicio.hora, aulasOnline[pos].horaInicio.minuto, aulasOnline[pos].nomeDocente);
+                printf("\n\nPresenças(%d):", aulasOnline[pos].contEstudantesPresentes);
+                for(i=0;i<quantAcessos;i++){
+                    if(strcmp(acessos[i].desigacaoAula, aulasOnline[pos].designacao)==0&&strcmp(acessos[i].tipoAcesso, "ON")==0){
+                        printf("\n\t- %d", acessos[i].numEstudante);
+                    }
+                }
+                printf("\n\n---------------------------------------------\n\n\n");
+            }
+        }
+        else
+        {
+            printf("A designação da aula que colocou não existe.\nAulas registadas:\n");
+            for(i=0; i<quantAulas; i++)
+            {
+                printf("-> %s\n", aulasOnline[i].designacao);
+
+            }
+            printf("\n");
+        }
+    }
+}
