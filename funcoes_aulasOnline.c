@@ -258,12 +258,12 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
                         (*quantAulas)++;
                         (*quantAulasAgendadas)++;
                         printf("Aula agendada com sucesso!\n\n");
-                        return aulasOnline;
                     }
                 }
             }
         }
     }
+    return aulasOnline;
 }
 
 void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
