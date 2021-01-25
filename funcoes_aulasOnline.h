@@ -15,6 +15,6 @@ char menuEditarAula(tipoAulasOnline aula);
 tipoAulasOnline *eliminaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[], int quantUC, int *quantAulasAgendadas);
 void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasAgendadas);
 void finalizarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], int quantUC, int *quantAulasDecorrer, int *quantAulasRealizadas, int *quantAulasGravadas);
-char verificaTipoAula(tipoUC uc, int *verificaTipo);
+void verificaTipoAula(tipoUC uc, int *verificaTipo, char tipo[]);
 
 #endif // FUNCOES_AULASONLINE_H_INCLUDED

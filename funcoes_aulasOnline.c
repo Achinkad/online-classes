@@ -131,20 +131,16 @@ tipoAulasOnline lerDadosAulas(tipoUC uc, char codigo[], tipoAulasOnline aulas[],
     }
 }
 
-char verificaTipoAula(tipoUC uc, int *verificaTipo)
+void verificaTipoAula(tipoUC uc, int *verificaTipo, char tipo[])
 {
-    char tipo[MAX_STRING];
-    char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
-    int quantTipoTotal;
-
-    lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpção: ", opcoesTipo, 3, tipo);
+    int quantTipoTotal = 0;
 
     if(strcmp(tipo, "TP") == 0)
     {
         quantTipoTotal = uc.aulasTP.contAgendadas + uc.aulasTP.contRealizadas;
-        if(quantTipoTotal > uc.aulasTP.quantAulas)
+        if(quantTipoTotal >= uc.aulasTP.quantAulas)
         {
-            printf("Não é possível adicionar mais aulas TP para esta UC.\n");
+            printf("Não é possível adicionar mais aulas TP para esta UC.\n\n");
             *verificaTipo = 0;
         }
         else
@@ -156,9 +152,10 @@ char verificaTipoAula(tipoUC uc, int *verificaTipo)
     if(strcmp(tipo, "T") == 0)
     {
         quantTipoTotal = uc.aulasT.contAgendadas + uc.aulasT.contRealizadas;
-        if(quantTipoTotal > uc.aulasT.quantAulas)
+
+        if(quantTipoTotal >= uc.aulasT.quantAulas)
         {
-            printf("Não é possível adicionar mais aulas T para esta UC.\n");
+            printf("Não é possível adicionar mais aulas T para esta UC.\n\n");
             *verificaTipo = 0;
         }
         else
@@ -170,9 +167,9 @@ char verificaTipoAula(tipoUC uc, int *verificaTipo)
     if(strcmp(tipo, "PL") == 0)
     {
         quantTipoTotal = uc.aulasPL.contAgendadas + uc.aulasPL.contRealizadas;
-        if(quantTipoTotal > uc.aulasPL.quantAulas)
+        if(quantTipoTotal >= uc.aulasPL.quantAulas)
         {
-            printf("Não é possível adicionar mais aulas PL para esta UC.\n");
+            printf("Não é possível adicionar mais aulas PL para esta UC.\n\n");
             *verificaTipo = 0;
         }
         else
@@ -180,13 +177,13 @@ char verificaTipoAula(tipoUC uc, int *verificaTipo)
             *verificaTipo = 1;
         }
     }
-    return tipo[MAX_STRING];
 }
 
 tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC, int *quantAulasAgendadas)
 {
     int posAula, posUC, i, verificaTipo=0;
-    char designacao[MAX_STRING], codigoUC[MAX_UC_CODIGO], tipo[MAX_STRING];
+    char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
+    char designacao[MAX_STRING], codigoUC[MAX_UC_CODIGO], tipo[MAX_STRING], tipoRegime;
     tipoAulasOnline *pAulasOnline, dados;
     pAulasOnline = aulasOnline;
 
@@ -220,7 +217,9 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
         }
         else
         {
-            tipo[MAX_STRING] = verificaTipoAula(ucs[posUC], &verificaTipo);
+            lerOpcao("Indique o tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpção: ", opcoesTipo, 3, tipo);
+            verificaTipoAula(ucs[posUC], &verificaTipo, tipo);
+
             if(verificaTipo == 1)
             {
                 dados = lerDadosAulas(ucs[posUC], codigoUC, aulasOnline, *quantAulas);
@@ -257,12 +256,12 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
                     }
                     (*quantAulas)++;
                     (*quantAulasAgendadas)++;
+                    printf("Aula agendada com sucesso!\n\n");
+                    return aulasOnline;
                 }
             }
         }
     }
-    printf("Aula agendada com sucesso!\n\n");
-    return aulasOnline;
 }
 
 void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas)
