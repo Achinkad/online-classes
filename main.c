@@ -26,7 +26,7 @@ int main()
     tipoAulasOnline *aulasOnline = NULL;
     tipoAcesso *acessos = NULL;
 
-    int quantUC=0, quantAulas=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
+    int quantUC=0, quantAulas=0, quantEstudantes=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
     char opcao, opcaosubMenu, designacao[MAX_STRING], codigo[MAX_STRING];
 
     setlocale(LC_ALL, "");
@@ -221,7 +221,7 @@ int main()
                 switch(opcaosubMenu)
                 {
                     case 'A':
-                        estudante[*quantEstudantes] = novoEstudante();
+                        estudante[quantEstudantes] = novoEstudante();
                         break;
 
                     case 'B':
