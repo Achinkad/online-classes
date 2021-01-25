@@ -26,12 +26,13 @@ int main()
     tipoAulasOnline *aulasOnline = NULL;
     tipoAcesso *acessos = NULL;
 
-    int quantUC=0, quantAulas=0, quantEstudantes=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i;
-    char opcao, opcaosubMenu, designacao[MAX_STRING], codigo[MAX_STRING];
+    int quantUC=0, quantAulas=0, quantEstudantes=0, quantAcessos=0, quantAulasAgendadas=0, quantAulasRealizadas=0, quantAulasGravadas=0, quantAulasDecorrer=0, pos, i, numero;
+    char opcao, opcaosubMenu, designacao[MAX_STRING], codigo[MAX_STRING], nome[MAX_STRING];
 
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
+    leFichBinEstudantes(estudante, &quantEstudantes);
     aulasOnline = leFichBinAulasOnline(aulasOnline, &quantAulas);
     acessos=leFichBinAcessos(acessos, &quantAcessos);
 
@@ -170,20 +171,24 @@ int main()
                 switch(opcaosubMenu)
                 {
                 case 'E':
-                    escreveFichBinUCs(ucs,quantUC);
+                    escreveFichBinUCs(ucs, quantUC);
+                    escreveFichBinEstudantes(estudante, quantEstudantes);
                     escreveFichBinAulasOnline(aulasOnline, quantAulas);
                     escreveFichBinAcessos(acessos, quantAcessos);
+                    printf("Dados registados no ficheiro com sucesso!\n\n");
                     break;
                 case 'L':
-                    leFichBinUCs(ucs,&quantUC);
+                    leFichBinUCs(ucs, &quantUC);
+                    printf("Dados lidos com sucesso!\n\n");
                     break;
                 case 'R':
                     printf("Limpar dados da Aplicação!");
                     break;
                 case 'S':
+                    printf("\n");
                     break;
                 default:
-                    printf("\nOpcao Invalida!\n");
+                    printf("Opção inválida!\n");
                     break;
                 }
             }
@@ -221,15 +226,102 @@ int main()
                 switch(opcaosubMenu)
                 {
                     case 'A':
-                        estudante[quantEstudantes] = novoEstudante();
+                        if(quantEstudantes >= 100)
+                        {
+                            printf("Não é possível criar mais estudantes!\n\n");
+                        }
+                        else
+                        {
+                            numero = lerInteiro("Insira o número do novo estudante", 1, 1000);
+                            pos = procuraEstudante(estudante, numero, quantEstudantes);
+                            if(pos == -1)
+                            {
+                                lerString("Insira o nome do novo estudante: ", nome, MAX_STRING);
+                                strcpy(estudante[quantEstudantes].nome, nome);
+                                estudante[quantEstudantes].numero = numero;
+                                quantEstudantes++;
+                                printf("Estudante criado com sucesso!\n\n");
+                            }
+                            else
+                            {
+                                printf("Já existe um estudante com o mesmo número.\n\n");
+                            }
+                        }
                         break;
 
                     case 'B':
-                        printf("Editar ESTUDANTE");
+                        if(quantEstudantes > 0)
+                        {
+                            numero = lerInteiro("Indique o número do estudante que pretende editar", 1, 1000);
+                            pos = procuraEstudante(estudante, numero, quantEstudantes);
+                            if(pos == -1)
+                            {
+                                printf("Número de estudante inexistente!\n\n");
+                            }
+                            else
+                            {
+                                printf("\n");
+                                editarEstudante(estudante, pos, quantEstudantes);
+                            }
+                        }
+                        else
+                        {
+                            printf("Não existem estudantes registados nos sistema.\n\n");
+                        }
                         break;
 
                     case 'C':
-                        printf("Eliminar ESTUDANTE");
+                        if(quantEstudantes > 0)
+                        {
+                            numero = lerInteiro("Indique o número do estudante a eliminar", 1, 1000);
+                            pos = procuraEstudante(estudante, numero, quantEstudantes);
+
+                            if(pos != -1)
+                            {
+                                printf("Têm a certeza que pretende eliminar o estudante? (S)im/(N)ão: ");
+                                scanf("%s", &opcao);
+                                limpaBufferStdin();
+                                opcao = toupper(opcao);
+
+                                if(opcao == 'S')
+                                {
+                                    for(i = pos; i < quantEstudantes - 1; i++)
+                                    {
+                                        estudante[i] = estudante[i+1];
+                                    }
+                                    quantEstudantes--;
+                                    printf("Estudante eliminado com sucesso!\n\n");
+                                }
+                                else
+                                {
+                                    printf("Eliminação do estudante cancelada!\n\n");
+                                }
+                            }
+                            else
+                            {
+                                printf("Número de estudante inexistente!\n\n");
+                            }
+                        }
+                        else
+                        {
+                            printf("Não existem estudantes registados no sistema!\n\n");
+                        }
+                        break;
+
+                    case 'D':
+                        if(quantEstudantes > 0)
+                        {
+                            printf("Quantidade total de estudantes: %d\n", quantEstudantes);
+                            for(i = 0; i < quantEstudantes; i++)
+                            {
+                                printf("Estudante número %d -> %s\n", estudante[i].numero, estudante[i].nome);
+                            }
+                            printf("\n");
+                        }
+                        else
+                        {
+                            printf("Não existem estudantes registados no sistema!\n\n");
+                        }
                         break;
 
                     case 'S':
@@ -240,7 +332,8 @@ int main()
                         printf("Opção inválida! Tente outra vez.\n\n");
                         break;
                 }
-            }while(opcaosubMenu != 'S');
+            }
+            while(opcaosubMenu != 'S');
             break;
 
         case 'S':
@@ -341,8 +434,9 @@ char menuEstudantes()
     char opcao;
     printf("------------------ Gestão de Estudantes ------------------\n\n");
     printf("\tA - Adicionar novo estudante\n");
-    printf("\tA - Editar estudante\n");
-    printf("\tA - Eliminar estudante\n");
+    printf("\tB - Editar estudante\n");
+    printf("\tC - Eliminar estudante\n");
+    printf("\tD - Listar estudantes\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opção: ");
     scanf("%c", &opcao);
