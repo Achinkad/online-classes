@@ -108,7 +108,7 @@ tipoAulasOnline lerDadosAulas()
 }
 
 // Funcao que armazena os dados
-tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC)
+tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC, int *quantAulasAgendadas)
 {
     int posAula, posUC, i;
     char designacao[MAX_STRING], codigoUC[MAX_UC_CODIGO];
@@ -172,6 +172,7 @@ tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipo
                 (ucs[posUC].aulasPL.contAgendadas)++;
             }
             (*quantAulas)++;
+            (*quantAulasAgendadas)++;
 
         }
     }

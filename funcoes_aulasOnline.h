@@ -3,7 +3,7 @@
 
 #include "constantes.h"
 
-tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC);
+tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC, int *quantAulasAgendadas);
 tipoAulasOnline lerDadosAulas();
 void listaAulas(tipoAulasOnline aulasOnline[], int quantAulas);
 void mostraAulas(tipoAulasOnline aulasOnline);
