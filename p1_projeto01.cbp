@@ -32,6 +32,10 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="constantes.h" />
+		<Unit filename="funcoes_acessos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="funcoes_acessos.h" />
 		<Unit filename="funcoes_aulasOnline.c">
 			<Option compilerVar="CC" />
 		</Unit>

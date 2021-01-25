@@ -167,7 +167,7 @@ void verificaTipoAula(tipoUC uc, int *verificaTipo, char tipo[])
 
 tipoAulasOnline *agendaAula(tipoAulasOnline aulasOnline[], int *quantAulas, tipoUC ucs[MAX_UC], int quantUC, int *quantAulasAgendadas)
 {
-    int posAula, posUC, pos, i, verificaTipo=0;
+    int posAula, posUC, pos=-1, i, verificaTipo=0;
     char opcoesTipo[3][MAX_STRING] = {"T","TP","PL"};
     char designacao[MAX_STRING], codigoUC[MAX_UC_CODIGO], tipo[MAX_STRING], tipoRegime;
     tipoAulasOnline *pAulasOnline, dados;
@@ -393,8 +393,8 @@ char menuEditarAula(tipoAulasOnline aula)
         printf("\nHora de fim: %.2d:%.2d:%.2d", aula.horaFim.hora, aula.horaFim.minuto, aula.horaFim.segundo);
     }
 
-    printf("\n\n\tA - Editar codigo da UC associada");
-    printf("\n\tB - Editar o nome do docente");
+    printf("\n\n\tA - Editar a data da aula");
+    printf("\n\tB - Editar a hora de início da aula");
     printf("\n\tC - Editar tipo de aula");
     printf("\n\tD - Editar a data da aula");
     printf("\n\tS - Concluir edição");
@@ -422,36 +422,16 @@ void editarAula(tipoAulasOnline aulasOnline[], int quantAulas, int quantAulasAge
             switch(opcaoMenu)
             {
             case 'A':
-                lerString("Indique o codigo da UC a substituir: ", novoCodigoUC, MAX_UC_CODIGO);
-                posUC = procuraUC(novoCodigoUC, ucs, quantUC);
-                if(posUC != -1)
-                {
-                    strcpy(aulasOnline[pos].codigoUC, novoCodigoUC);
-                    printf("Codigo da UC editado com sucesso!\n");
-                }
-                else
-                {
-                    if(quantUC > 0)
-                    {
-                        printf("Código da UC não existe! Há %d opcões possíveis:\n", quantUC);
-                        for(i = 0; i < quantUC; i++)
-                        {
-                            printf("-> %s: %s\n", ucs[i].designacao, ucs[i].codigo);
-                        }
-                    }
-                    else
-                    {
-                        printf("O código da UC não existe, porque não existem UC'S no sistema.\n");
-                    }
-                }
+                aulasOnline[pos].data = lerData();
+                printf("Data da aula editada com sucesso!\n");
                 break;
             case 'B':
                 lerString("Indique o novo nome do docente: ", aulasOnline[pos].nomeDocente, MAX_STRING);
                 printf("Nome do docente editado com sucesso!\n");
                 break;
             case 'C':
-                lerOpcao("Indique o novo tipo de aula.\n\tT - Teorica \n\tTP - Teorico-Pratica\n\tPL - Pratica laboratorial\nOpcao: ", opcoesTipo, 3, aulasOnline[pos].tipo);
-                printf("Tipo de aula editado com sucesso!\n");
+                lerString("Indique o novo nome do docente: ", aulasOnline[pos].nomeDocente, MAX_STRING);
+                printf("Nome do docente editado com sucesso!\n");
                 break;
             case 'D':
                 aulasOnline[pos].data = lerData();
