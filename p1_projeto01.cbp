@@ -40,6 +40,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="funcoes_auxiliares.h" />
+		<Unit filename="funcoes_estudante.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="funcoes_estudante.h" />
 		<Unit filename="funcoes_tipoAula.c">
 			<Option compilerVar="CC" />
 		</Unit>

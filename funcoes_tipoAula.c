@@ -11,5 +11,7 @@ tipoAula criarTipoAula(char tipo[MAX_STRING]){
     tipoAula.quantAulas=lerInteiro("Indique a quantidade de aulas",1,100);
     printf("\t");
     tipoAula.duracao=lerInteiro("Indique a duracao(minutos) de aulas",1,300);
+    tipoAula.contAgendadas=0;
+    tipoAula.contRealizadas=0;
     return tipoAula;
 }
