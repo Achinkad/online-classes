@@ -69,7 +69,7 @@ void mostraAulas(tipoAulasOnline aulasOnline)
     }
     else
     {
-        printf("\nHora de inicio: N/A");
+        printf("\nHora de fim: N/A");
     }
 
     if(strcmp(aulasOnline.estado, "R")==0)
@@ -681,13 +681,10 @@ void informacaoAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[],
             posUC=procuraUC(aulasOnline[pos].codigoUC, ucs, quantUC);
             if(strcmp(aulasOnline[pos].tipo, "T")==0){
                 aulasRestantes=obterAulasRestantes(ucs[posUC].aulasT);
-                printf("TTTTTT");
             }else if(strcmp(aulasOnline[pos].tipo, "TP")==0){
                 aulasRestantes=obterAulasRestantes(ucs[posUC].aulasTP);
-                 printf("TPTPTPTP");
             }else if(strcmp(aulasOnline[pos].tipo, "PL")==0){
                 aulasRestantes=obterAulasRestantes(ucs[posUC].aulasPL);
-                 printf("PLPLPLPL");
             }
             printf("\n\tUnidade Curricular: %s", ucs[posUC].designacao);
             printf("\n\tAulas restantes do tipo %s: %d", aulasOnline[pos].tipo, aulasRestantes);

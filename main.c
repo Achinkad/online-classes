@@ -13,7 +13,7 @@
 #include "funcoes_estudante.h"
 #include "funcoes_estatistica.h"
 
-char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas);
+char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas, int quantAulasDecorrer);
 char menuUC();
 char menuGestaoFicheiro();
 char menuAulas(int quantAulas);
@@ -47,7 +47,7 @@ int main()
 
     do
     {
-        opcao = menu(quantUC, quantAulasAgendadas, quantAulasRealizadas, quantAulasGravadas);
+        opcao = menu(quantUC, quantAulasAgendadas, quantAulasRealizadas, quantAulasGravadas, quantAulasDecorrer);
         switch(opcao)
         {
         case 'A':
@@ -215,6 +215,9 @@ int main()
                 case 'A':
                     acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, &quantAulas, quantAulasDecorrer, quantAulasGravadas);
                     break;
+                case 'B':
+                    verificarPresencas(aulasOnline, quantAulas, acessos, quantAcessos);
+                    break;
                 case 'S':
                     break;
                 default:
@@ -358,12 +361,13 @@ int main()
 }
 
 // Apresentação da estrutura do menu geral
-char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas)
+char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas, int quantAulasDecorrer)
 {
     char opcao;
     printf("------------------ Menu Principal ------------------\n\n");
     printf("Unidades Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulasAgendadas);
-    printf("Aulas realizadas: %d\t\tAulas gravadas: %d\n\n", quantAulasRealizadas, quantAulasGravadas);
+    printf("Aulas realizadas: %d\t\tAulas gravadas: %d\n", quantAulasRealizadas, quantAulasGravadas);
+    printf("Aulas a decorrer: %d\n\n", quantAulasDecorrer);
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
     printf("\tD - Ver Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n\tF - Gestao de Estudantes\n");
     printf("\tS - Sair\n");
@@ -427,6 +431,7 @@ char menuGestaoAcessos()
     char opcao;
     printf("\n\n------------------ Gestao de Acessos ------------------\n\n");
     printf("\tA - Registar Acessos de Estudante\n");
+    printf("\tB - Visualizar Presencas numa Aula\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
     scanf("%c", &opcao);
