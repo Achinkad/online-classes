@@ -11,6 +11,7 @@
 #include "funcoes_aulasOnline.h"
 #include "funcoes_acessos.h"
 #include "funcoes_estudante.h"
+#include "funcoes_estatistica.h"
 
 char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int quantAulasGravadas);
 char menuUC();
@@ -197,7 +198,10 @@ int main()
             break;
 
         case 'D':
-            printf("Gestao de Dados Estatisticos\n\n");
+            printf("\n\n---------------- DADOS ESTATISTICOS ------------------\n\n");
+            printf("Media de presencas em cada aula online realizada: %d", obterMediaPresencasAulasRealizadas(aulasOnline, quantAulas,quantAulasRealizadas));
+            printf("\nPercentagem de UCs com Aulas Gravadas: %d%%", obterPercentagemUcsGravadas(ucs, quantUC, aulasOnline, quantAulas));
+            printf("\n\n");
             break;
 
         case 'E':
@@ -359,7 +363,7 @@ char menu(int quantUC, int quantAulasAgendadas, int quantAulasRealizadas, int qu
     printf("Unidades Curriculares: %d \tAulas agendadas: %d\n", quantUC, quantAulasAgendadas);
     printf("Aulas realizadas: %d\t\tAulas gravadas: %d\n\n", quantAulasRealizadas, quantAulasGravadas);
     printf("\tA - Gestao de Unidades Curriculares\n\tB - Gestao de Aulas Online\n\tC - Gestao de Ficheiros\n");
-    printf("\tD - Gestao de Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n\tF - Gestao de Estudantes\n");
+    printf("\tD - Ver Dados Estatisticos\n\tE - Gestao de Acesso as Aulas Online\n\tF - Gestao de Estudantes\n");
     printf("\tS - Sair\n");
     printf("\nInsira uma opcao: ");
     scanf("%c", &opcao);
