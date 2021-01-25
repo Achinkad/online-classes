@@ -601,7 +601,7 @@ void iniciarAula(tipoAulasOnline aulasOnline[], int quantAulas, tipoUC ucs[], in
     }
     else
     {
-        printf("A designação da aula que colocou não existe para dar início a mesma.\nOpções possíveis:\n");
+        printf("A designação da aula que colocou não existe para dar início ou já está a decorrer uma aula da mesma UC.\nOpções possíveis:\n");
         for(i=0; i<quantAulas; i++)
         {
             if(strcmp(aulasOnline[i].estado, "A") == 0)

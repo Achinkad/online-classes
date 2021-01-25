@@ -23,7 +23,7 @@ char menuEstudantes();
 int main()
 {
     tipoUC ucs[MAX_UC];
-    tipoEstudantes estudante[MAX_STRING];
+    tipoEstudantes estudantes[MAX_ESTUDANTES];
     tipoAulasOnline *aulasOnline = NULL;
     tipoAcesso *acessos = NULL;
 
@@ -33,7 +33,7 @@ int main()
     setlocale(LC_ALL, "");
 
     leFichBinUCs(ucs, &quantUC);
-    leFichBinEstudantes(estudante, &quantEstudantes);
+    leFichBinEstudantes(estudantes, &quantEstudantes);
     aulasOnline = leFichBinAulasOnline(aulasOnline, &quantAulas);
     acessos=leFichBinAcessos(acessos, &quantAcessos);
 
@@ -174,7 +174,7 @@ int main()
                 {
                 case 'E':
                     escreveFichBinUCs(ucs, quantUC);
-                    escreveFichBinEstudantes(estudante, quantEstudantes);
+                    escreveFichBinEstudantes(estudantes, quantEstudantes);
                     escreveFichBinAulasOnline(aulasOnline, quantAulas);
                     escreveFichBinAcessos(acessos, quantAcessos);
                     printf("Dados registados no ficheiro com sucesso!\n");
@@ -213,10 +213,10 @@ int main()
                 switch(opcaosubMenu)
                 {
                 case 'A':
-                    acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, quantAulas, ucs, quantUC, quantAulasDecorrer, quantAulasGravadas);
+                    acessos = registarAcesso(acessos, &quantAcessos, aulasOnline, quantAulas, ucs, quantUC, estudantes, quantEstudantes, quantAulasDecorrer, quantAulasGravadas);
                     break;
                 case 'B':
-                    verificarPresencas(aulasOnline, quantAulas, acessos, quantAcessos);
+                    verificarPresencas(aulasOnline, quantAulas, acessos, quantAcessos, estudantes, quantEstudantes);
                     break;
                 case 'S':
                     break;
@@ -236,19 +236,19 @@ int main()
                 switch(opcaosubMenu)
                 {
                     case 'A':
-                        if(quantEstudantes > 100)
+                        if(quantEstudantes >= 100)
                         {
                             printf("Não é possível criar mais estudantes!\n\n");
                         }
                         else
                         {
-                            numero = lerInteiro("Insira o número do novo estudante", 1, 1000);
-                            pos = procuraEstudante(estudante, numero, quantEstudantes);
+                            numero = lerInteiro("Insira o número do novo estudante", 1, tamanhoNumEstudantes);
+                            pos = procuraEstudante(estudantes, numero, quantEstudantes);
                             if(pos == -1)
                             {
                                 lerString("Insira o nome do novo estudante: ", nome, MAX_STRING);
-                                strcpy(estudante[quantEstudantes].nome, nome);
-                                estudante[quantEstudantes].numero = numero;
+                                strcpy(estudantes[quantEstudantes].nome, nome);
+                                estudantes[quantEstudantes].numero = numero;
                                 quantEstudantes++;
                                 printf("Estudante criado com sucesso!\n\n");
                             }
@@ -262,8 +262,8 @@ int main()
                     case 'B':
                         if(quantEstudantes > 0)
                         {
-                            numero = lerInteiro("Indique o número do estudante que pretende editar", 1, 1000);
-                            pos = procuraEstudante(estudante, numero, quantEstudantes);
+                            numero = lerInteiro("Indique o número do estudante que pretende editar", 1, tamanhoNumEstudantes);
+                            pos = procuraEstudante(estudantes, numero, quantEstudantes);
                             if(pos == -1)
                             {
                                 printf("Número de estudante inexistente!\n\n");
@@ -271,7 +271,7 @@ int main()
                             else
                             {
                                 printf("\n");
-                                editarEstudante(estudante, pos, quantEstudantes);
+                                editarEstudante(estudantes, pos, quantEstudantes);
                             }
                         }
                         else
@@ -283,8 +283,8 @@ int main()
                     case 'C':
                         if(quantEstudantes > 0)
                         {
-                            numero = lerInteiro("Indique o número do estudante a eliminar", 1, 1000);
-                            pos = procuraEstudante(estudante, numero, quantEstudantes);
+                            numero = lerInteiro("Indique o número do estudante a eliminar", 1, tamanhoNumEstudantes);
+                            pos = procuraEstudante(estudantes, numero, quantEstudantes);
 
                             if(pos != -1)
                             {
@@ -297,7 +297,7 @@ int main()
                                 {
                                     for(i = pos; i < quantEstudantes - 1; i++)
                                     {
-                                        estudante[i] = estudante[i+1];
+                                        estudantes[i] = estudantes[i+1];
                                     }
                                     quantEstudantes--;
                                     printf("Estudante eliminado com sucesso!\n\n");
@@ -324,7 +324,7 @@ int main()
                             printf("Quantidade total de estudantes: %d\n", quantEstudantes);
                             for(i = 0; i < quantEstudantes; i++)
                             {
-                                printf("Estudante número %d -> %s\n", estudante[i].numero, estudante[i].nome);
+                                printf("Estudante número %d -> %s\n", estudantes[i].numero, estudantes[i].nome);
                             }
                             printf("\n");
                         }

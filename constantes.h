@@ -3,7 +3,9 @@
 
 #define MAX_STRING 100
 #define MAX_UC 40
+#define MAX_ESTUDANTES 100
 #define MAX_UC_CODIGO 20
+#define tamanhoNumEstudantes 999999
 
 //Declaração do Tipo de Data
 typedef struct{
